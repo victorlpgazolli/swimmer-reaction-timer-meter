@@ -1,6 +1,6 @@
 import config from "config";
 import jwt from "jsonwebtoken";
-import { Login, User } from "@types";
+import { User } from "@types";
 
 const generateToken = (userPayload: User) => {
 
@@ -19,22 +19,9 @@ const decodeToken = (token: string) => {
 }
 
 
-const loginUser = ({
-    username,
-    password
-}: Login) => {
-    console.log({
-        username,
-        password
-    });
-
-
-    return generateToken({ username })
-}
 
 
 export default {
     generateToken,
-    loginUser,
     decodeToken,
 }

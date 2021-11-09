@@ -11,7 +11,9 @@ const loginUser: Endpoint = (req, res) => {
         password: "12321"
     };
 
-    const token = services.auth.loginUser(userData);
+    const token = services.auth.generateToken({
+        username: userData.username
+    });
 
     const response = {
         username: userData.username,
