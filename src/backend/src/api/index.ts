@@ -1,9 +1,10 @@
 
 import express from 'express';
 import cors from 'cors';
-import routes from '@api/routes';
+import routes from 'api/routes';
 import config from '@config';
-import middlewares from '@api/middlewares';
+import middlewares from 'api/middlewares';
+import http from 'http';
 const initServer = ({ app }: { app: express.Application }) => {
 
     app.use(cors())
@@ -19,11 +20,17 @@ const initServer = ({ app }: { app: express.Application }) => {
         middlewares.errors
     )
 
+    const server = http.createServer(app);
     return {
         start: (
             port: number = config.port,
             callback: () => void = () => console.log("Started server!!")
         ) => app.listen(port, callback),
+        attach: (
+            callback: ({ app }: { app: express.Application }) => void
+        ) => {
+            callback({ app });
+        }
     }
 }
 

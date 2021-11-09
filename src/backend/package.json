@@ -21,7 +21,8 @@
     "express": "^4.17.1",
     "express-jwt": "^6.1.0",
     "jsonwebtoken": "^8.5.1",
-    "tscpaths": "0.0.9"
+    "tscpaths": "0.0.9",
+    "ws": "^8.2.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
