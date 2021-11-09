@@ -1,10 +1,9 @@
+import controllers from '@controllers';
 import { Router } from 'express';
 
 
 const router = Router();
 
-router.use("/", (req, res) => {
-    res.send('teste');
-})
+router.use("/", controllers.user.getUserData)
 
 export default router

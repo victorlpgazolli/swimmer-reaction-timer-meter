@@ -8,7 +8,7 @@ import middlewares from '@api/middlewares'
 const router = Router();
 
 router.use("/login", loginRouter);
-router.use("/user", middlewares.auth.isAuth, userRouter);
-router.use("/swimmer", swimmerRouter);
+router.use("/user", middlewares.auth, userRouter);
+router.use("/swimmer", middlewares.auth, swimmerRouter);
 
 export default router
