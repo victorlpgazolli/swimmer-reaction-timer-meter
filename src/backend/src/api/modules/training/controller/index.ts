@@ -1,12 +1,12 @@
 import { Endpoint } from "@types";
 
 
-const getTrainingData: Endpoint = (req, res) => {
+const getTrainingBySwimmer: Endpoint = (req, res) => {
 
     res.json({});
 }
 
-const createNewTraining: Endpoint = (req, res) => {
+const createNewTrainingForSwimmer: Endpoint = (req, res) => {
 
     res.json({});
 }
@@ -16,7 +16,7 @@ const updateTraining: Endpoint = (req, res) => {
 }
 
 export default {
-    getTrainingData,
-    createNewTraining,
+    getTrainingBySwimmer,
+    createNewTrainingForSwimmer,
     updateTraining
 }

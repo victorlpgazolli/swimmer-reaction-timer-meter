@@ -1,0 +1,216 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Swagger swimmer reaction time meter
+  description: Swimmer reaction time meter API
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+definitions:
+  coachOutput:
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+
+  coachInput:
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+
+  swimmerInput:
+    properties:
+      name:
+        type: string
+
+  swimmerOutput:
+    properties:
+      name:
+        type: string
+      id:
+        type: string
+
+  trainingInput:
+    properties:
+      swimmier_id:
+        type: string
+        minLength: 1
+      reaction_time_diff_in_milliseconds:
+        type: integer
+        minLength: 1
+
+  trainingOutput:
+    properties:
+      swimmier_id:
+        type: string
+        minLength: 1
+      trainingData: 
+        type: string
+        minLength: 1
+
+  swimmerId:
+    - name: swimmer
+      in: query
+      description: Filters pets by one or more tags
+      required: true
+      type: array
+      items:
+        type: string
+      uniqueItems: true
+  
+parameters:
+  swimmerId:
+    name: swimmerId
+    in: path
+    description: Swimmer Id
+    required: true
+
+
+  coachId:
+    name: coachId
+    in: path
+    description: coach Id
+    required: true
+    type: string
+
+paths:
+  /swimmers/{coachId}:
+    parameters:
+      - $ref: "#/parameters/coachId"
+    get:
+      description: Returns all swimmers by coach id
+      operationId: findSwimmerByCoachId
+      responses:
+        default:
+          description: Returns the swimmers related to that coach
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/coachOutput"
+
+    delete:
+      description: Deletes swimmer related to that coach id
+      operationId: deleteSwimmer
+      parameters:
+        $ref: '#/definitions/swimmerId'
+      responses:
+        201:
+          description: Ok
+    patch:
+      description: Updates a swimmer data
+      parameters:
+        - name: swimmer
+          in: body
+          description: The updated swimmer info
+          required: true
+          schema:
+            $ref: "#/definitions/swimmerInput"
+      responses:
+        default:
+          description: Returns the updated coach data
+          schema:
+            $ref: "#/definitions/swimmerOutput"
+
+    post:
+      description: Creates a new swimmer in the for coach
+      operationId: addSwimmer
+      parameters:
+        - name: swimmer
+          in: body
+          description: The swimmer to add to the coach
+          required: true
+          schema:
+            $ref: "#/definitions/swimmerInput"
+      responses:
+        201:
+          description: Returns the newly-added swimmer
+          schema:
+            $ref: "#/definitions/swimmerOutput"
+
+  /coach/{coachId}:
+    parameters:
+      - $ref: "#/parameters/coachId"
+
+    get:
+      description: Returns a coach by id
+      operationId: getCoachById
+      responses:
+        default:
+          description: Returns the coach data
+          schema:
+            $ref: "#/definitions/coachOutput"
+
+    delete:
+      description: Deletes a coach and its swimmers
+      operationId: deleteCoach
+      responses:
+        201:
+          description: Ok
+
+    patch:
+      description: Updates a coach data
+      parameters:
+        - name: coach
+          in: body
+          description: The updated coach info
+          required: true
+          schema:
+            $ref: "#/definitions/coachInput"
+      responses:
+        default:
+          description: Returns the updated coach data
+          schema:
+            $ref: "#/definitions/coachOutput"
+
+  /training/{swimmerId}:
+    parameters:
+      - $ref: "#/parameters/swimmerId"
+
+    post:
+      description: Create a new training for swimmer
+      operationId: addTrainingForSwimmer
+      parameters:
+        - name: swimmer id
+          in: query
+          description: swimmer to create new training
+          required: true
+          schema:
+            $ref: "#/definitions/swimmerId"
+        - name: training data
+          in: body
+          description: training information
+          required: true
+          schema:
+            $ref: "#/definitions/trainingInput"
+      responses:
+        201:
+          description: Ok
+
+    get:
+      description: Get a list of training for a swimmer
+      responses:
+        200:
+          description: Returns the list of trainings data
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/trainingOutput"
+  /:
+    get:
+      produces:
+        - text/html
+      responses:
+        default:
+          description: The Swagger homepage
+          schema:
+            type: file
+            default:
+              $ref: "index.html"
