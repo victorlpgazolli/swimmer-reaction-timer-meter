@@ -1,0 +1,27 @@
+version: '3'
+services:
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  api:
+    image: api
+    container_name: api
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - api-node-modules:/api/node_modules
+      - ./backend:/api
+    depends_on:
+      - redis
+    links:
+      - redis
+    environment:
+      PORT: 8082
+    ports:
+      - 8082:8082
+volumes:
+  api-node-modules:

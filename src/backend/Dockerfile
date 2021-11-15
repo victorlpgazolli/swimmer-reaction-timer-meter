@@ -1,4 +1,21 @@
-from node:14-alpine as builder
+FROM node:13-alpine
 
+RUN \
+    apk update && \
+    apk upgrade && \
+    apk add --upgrade dumb-init && \
+    apk add git
 
+WORKDIR /api
 
+RUN chown -R node /api
+
+USER node
+
+COPY --chown=node:node ["package.json", "package-lock.json", "./"]
+
+RUN npm ci
+
+COPY --chown=node:node . .
+
+CMD ["dumb-init", "npm", "run", "start"]
