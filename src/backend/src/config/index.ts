@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-process.env.PORT = process.env.PORT || '3000';
+process.env.PORT = process.env.PORT || '8082';
 
 const envFound = dotenv.config();
 if (envFound.error) throw new Error("missing .env");
