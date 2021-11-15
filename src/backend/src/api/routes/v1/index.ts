@@ -14,8 +14,8 @@ const router = Router();
 
 router.use("/login", loginRouter);
 router.use("/coach", middlewares.auth, coachRouter);
-router.use("/swimmer", swimmerRouter);
-router.use("/training", trainingRouter);
+router.use("/swimmer", middlewares.auth, swimmerRouter);
+router.use("/training", middlewares.auth, trainingRouter);
 router.use('/docs/', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 export default router
