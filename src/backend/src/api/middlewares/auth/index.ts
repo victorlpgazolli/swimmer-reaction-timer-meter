@@ -9,7 +9,7 @@ const jwtAuth: RequestHandler = jwt({
 });
 
 
-const handlers: Array<RequestHandler> = [
+const handlers: RequestHandler[] = [
     jwtAuth,
 ]
 

@@ -1,4 +1,4 @@
-import controller from 'api/modules/coach/controller';
+import controller from '@api/modules/coach/controller';
 import { Router } from 'express';
 
 

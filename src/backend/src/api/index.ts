@@ -1,9 +1,9 @@
 
 import express from 'express';
 import cors from 'cors';
-import routes from 'api/routes';
+import routes from '@api/routes';
 import config from '@config';
-import middlewares from 'api/middlewares';
+import middlewares from '@api/middlewares';
 const initServer = ({ app }: { app: express.Application }) => {
 
     app.use(cors())

@@ -1,11 +1,6 @@
-import { Endpoint, LoginResponse } from "@types";
-
-import { JwtPayload } from "jsonwebtoken";
+import { Endpoint, LoginResponse } from "@api/types";
 
 import services from "@services";
-
-
-
 
 const loginUser: Endpoint = (req, res) => {
 

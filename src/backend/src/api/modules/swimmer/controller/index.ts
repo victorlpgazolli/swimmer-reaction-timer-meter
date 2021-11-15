@@ -1,4 +1,4 @@
-import { Endpoint } from "@types";
+import { Endpoint } from "@api/types";
 
 
 const createNewSwimmer: Endpoint = (req, res) => {
@@ -14,7 +14,7 @@ const patchSwimmer: Endpoint = (req, res) => {
 
     res.json({});
 }
-const deleteSwimmerByCoachId: Endpoint = (req, res) => {
+const deleteSwimmer: Endpoint = (req, res) => {
 
     res.json({});
 }
@@ -23,5 +23,5 @@ export default {
     listSwimmersByCoachId,
     createNewSwimmer,
     patchSwimmer,
-    deleteSwimmerByCoachId
+    deleteSwimmer
 }

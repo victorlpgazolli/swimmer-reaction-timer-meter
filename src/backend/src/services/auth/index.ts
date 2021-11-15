@@ -1,6 +1,6 @@
-import config from "config";
+import config from "@config";
 import jwt from "jsonwebtoken";
-import { User } from "@types";
+import { User } from "@api/types";
 
 const generateToken = (userPayload: User) => {
 

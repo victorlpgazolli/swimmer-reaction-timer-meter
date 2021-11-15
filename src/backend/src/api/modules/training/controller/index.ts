@@ -1,4 +1,4 @@
-import { Endpoint } from "@types";
+import { Endpoint } from "@api/types";
 
 
 const getTrainingBySwimmer: Endpoint = (req, res) => {

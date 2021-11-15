@@ -1,5 +1,5 @@
 
-import { Middleware } from "@types";
+import { Middleware } from "@api/types";
 
 
 const showErrorMessage: Middleware = async (err, req, res, next) => {
