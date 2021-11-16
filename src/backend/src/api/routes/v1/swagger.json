@@ -287,10 +287,6 @@
         },
         "trainingInput": {
             "properties": {
-                "swimmer_id": {
-                    "type": "string",
-                    "minLength": 1
-                },
                 "reaction_time_diff_in_milliseconds": {
                     "type": "integer"
                 }
@@ -302,7 +298,7 @@
                     "type": "string",
                     "minLength": 1
                 },
-                "trainingData": {
+                "trainings": {
                     "type": "string",
                     "minLength": 1
                 }

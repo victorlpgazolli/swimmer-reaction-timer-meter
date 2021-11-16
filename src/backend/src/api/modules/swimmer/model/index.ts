@@ -12,6 +12,20 @@ const SwimmerSchema = new Schema({
         type: String,
         required: true
     },
+    coachId: {
+        type: String,
+        required: true
+    },
+    trainings: [
+        {
+            reaction_time_diff_in_milliseconds: {
+                type: String
+            },
+            timestamp: {
+                type: String
+            },
+        }
+    ]
 }, {
     timestamps: true,
 });

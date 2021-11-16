@@ -1,27 +1,78 @@
-import { Endpoint } from "@api/types";
+import { Endpoint, Swimmer, SwimmerTraining } from "@api/types";
+import swimmerModel from "@api/modules/swimmer/model";
 
-
-const createNewSwimmer: Endpoint = (req, res) => {
-
-    res.json({});
-}
-
-const listSwimmersByCoachId: Endpoint = (req, res) => {
-
-    res.json({});
-}
 const patchSwimmer: Endpoint = (req, res) => {
+    const {
+        swimmerId
+    } = req.params;
 
-    res.json({});
+    const swimmerNewData: Swimmer = req.body;
+
+    delete swimmerNewData.id;
+
+    // const swimmerUpdatedData = await swimmerModel.findOneAndUpdate(
+    //     { id: swimmerId },
+    //     swimmerNewData,
+    //     { new: true }
+    // )
+    // res.json(swimmerUpdatedData);
+    res.json(swimmerNewData)
 }
 const deleteSwimmer: Endpoint = (req, res) => {
+    const {
+        swimmerId: id
+    } = req.params;
 
-    res.json({});
+    // swimmerModel.deleteOne({ id });
+    // res.json(coach)
+
+    res.status(201).json()
+}
+const getTrainingFromSwimmer: Endpoint = (req, res) => {
+    const {
+        swimmerId: id
+    } = req.params;
+
+    // const swimmer = swimmerModel.findOne({ id });
+    // res.json(
+    //     swimmer.trainings || []
+    // )
+
+    res.json(id)
+}
+const createTrainingForSwimmer: Endpoint = async (req, res) => {
+    const {
+        swimmerId: id
+    } = req.params;
+
+    const swimmerTrainingToCreate: SwimmerTraining = req.body;
+
+    // const swimmer = await swimmerModel.findOne(
+    //     { id },
+    // )
+    // const hasTraining = Array.isArray(swimmer.trainings);
+
+    // if (!hasTraining) swimmer.trainings = [];
+
+    // swimmer.trainings.push({
+    //     ...swimmerTrainingToCreate,
+    //     timestamp: new Date().toISOString()
+    // });
+
+    // await swimmerModel.updateOne(
+    //     { id },
+    //     swimmer,
+    // )
+    // res.json({
+    //     swimmer_id: id,
+    //     trainings: swimmer.trainings
+    // })
+    res.json(swimmerTrainingToCreate);
 }
 
 export default {
-    listSwimmersByCoachId,
-    createNewSwimmer,
     patchSwimmer,
-    deleteSwimmer
+    deleteSwimmer,
+    getTrainingFromSwimmer,
+    createTrainingForSwimmer,
 }
