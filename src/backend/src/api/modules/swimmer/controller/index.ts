@@ -1,8 +1,9 @@
 import { Endpoint, Swimmer, SwimmerTraining } from "@api/types";
 import swimmerModel from "@api/modules/swimmer/model";
+import coachModel from "@api/modules/coach/model";
 import { isValidObjectId } from "mongoose";
 
-const patchSwimmer: Endpoint = (req, res) => {
+const patchSwimmer: Endpoint = async (req, res) => {
     const {
         swimmerId
     } = req.params;
@@ -11,13 +12,25 @@ const patchSwimmer: Endpoint = (req, res) => {
 
     delete swimmerNewData.id;
 
-    // const swimmerUpdatedData = await swimmerModel.findOneAndUpdate(
-    //     { id: swimmerId },
-    //     swimmerNewData,
-    //     { new: true }
-    // )
-    // res.json(swimmerUpdatedData);
-    res.json(swimmerNewData)
+    const hasCoachId = !!swimmerNewData.coachId;
+
+    if (hasCoachId) {
+
+        const isIdValid = isValidObjectId(swimmerNewData.coachId);
+
+        if (!isIdValid) return res.status(400).json({ message: "coachId is not valid" });
+
+        const hasCoach = await coachModel.findById(swimmerNewData.coachId);
+
+        if (!hasCoach) return res.status(404).json({ message: "coachId do not found" });
+    }
+
+    const swimmerUpdatedData = await swimmerModel.findOneAndUpdate(
+        { id: swimmerId },
+        swimmerNewData,
+        { new: true }
+    )
+    res.json(swimmerUpdatedData);
 }
 const deleteSwimmer: Endpoint = async (req, res) => {
     const {
@@ -33,7 +46,16 @@ const getTrainingFromSwimmer: Endpoint = async (req, res) => {
         swimmerId: id
     } = req.params;
 
-    const swimmer: Swimmer | null = await swimmerModel.findOne({ id })
+    const isIdValid = isValidObjectId(id);
+
+    if (!isIdValid) return res.status(400).json({ message: "swimmerId is not valid" });
+
+    const swimmer: Swimmer | null = await swimmerModel.findById(
+        id
+    )
+    const hasSwimmer = !!swimmer;
+
+    if (!hasSwimmer) return res.status(404).json({ message: "swimmer do not found" });
 
     res.json({
         swimmer_id: id,
@@ -53,17 +75,16 @@ const createTrainingForSwimmer: Endpoint = async (req, res) => {
 
     const swimmerTrainingToCreate: SwimmerTraining = req.body;
 
-    const hasSwimmer = await swimmerModel.exists({ id });
-
-    if (!hasSwimmer) return res.status(404).json({ message: "swimmer do not found" });
-
     const isIdValid = isValidObjectId(id);
 
     if (!isIdValid) return res.status(400).json({ message: "swimmerId is not valid" });
 
-    const swimmer: any = await swimmerModel.findById(
+    const swimmer: Swimmer | null = await swimmerModel.findById(
         id
     )
+    const hasSwimmer = !!swimmer;
+
+    if (!hasSwimmer) return res.status(404).json({ message: "swimmer do not found" });
 
     const hasTraining = Array.isArray(swimmer.trainings);
 

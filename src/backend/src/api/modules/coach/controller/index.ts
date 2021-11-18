@@ -2,6 +2,7 @@ import { Coach, Endpoint, Swimmer } from "@api/types";
 import services from "@services";
 import coachModel from "@api/modules/coach/model";
 import swimmerModel from "@api/modules/swimmer/model";
+import { isValidObjectId } from "mongoose";
 
 const createCoach: Endpoint = async (req, res) => {
 
@@ -35,18 +36,33 @@ const patchCoach: Endpoint = async (req, res) => {
 
     delete coachNewData.id;
 
-    // const coachUpdatedData = await coachModel.findOneAndUpdate(
-    //     { id: coachId },
-    //     coachNewData,
-    //     { new: true }
-    // )
-    // res.json(coachUpdatedData);
-    res.json(coachNewData)
+    const isIdValid = isValidObjectId(coachId);
+
+    if (!isIdValid) return res.status(400).json({ message: "coachId is not valid" });
+
+    const coachExists = await coachModel.findById(coachId);
+
+    if (!coachExists) return res.status(404).json({ message: "coach do not found" });
+
+    const coachUpdatedData = await coachModel.findOneAndUpdate(
+        { id: coachId },
+        coachNewData,
+        { new: true }
+    )
+    res.json(coachUpdatedData);
 }
 const deleteCoach: Endpoint = async (req, res) => {
     const {
         coachId
     } = req.params;
+
+    const isIdValid = isValidObjectId(coachId);
+
+    if (!isIdValid) return res.status(400).json({ message: "coachId is not valid" });
+
+    const coachExists = await coachModel.findById(coachId);
+
+    if (!coachExists) return res.status(404).json({ message: "coach do not found" });
 
     await swimmerModel.deleteMany({ coachId })
     await coachModel.deleteOne({ id: coachId });
@@ -64,7 +80,11 @@ const getCoachById: Endpoint = async (req, res) => {
         coachId
     } = req.params;
 
-    const coach: Coach = await coachModel.findOne({ id: coachId });
+    const isIdValid = isValidObjectId(coachId);
+
+    if (!isIdValid) return res.status(400).json({ message: "coachId is not valid" });
+
+    const coach: Coach = await coachModel.findById(coachId);
 
     if (!coach) return res.status(404).json({ message: "coach do not found" })
 
@@ -76,7 +96,11 @@ const findSwimmerByCoachId: Endpoint = async (req, res) => {
         coachId
     } = req.params;
 
-    const coachExists = await coachModel.exists({ id: coachId });
+    const isIdValid = isValidObjectId(coachId);
+
+    if (!isIdValid) return res.status(400).json({ message: "coachId is not valid" });
+
+    const coachExists = await coachModel.findById(coachId);
 
     if (!coachExists) return res.status(404).json({ message: "coach do not found" });
 
@@ -93,7 +117,11 @@ const createSwimmersForCoach: Endpoint = async (req, res) => {
 
     delete swimmerToCreate.id;
 
-    const coachExists = await coachModel.exists({ id: coachId });
+    const isIdValid = isValidObjectId(coachId);
+
+    if (!isIdValid) return res.status(400).json({ message: "coachId is not valid" });
+
+    const coachExists = await coachModel.findById(coachId);
 
     if (!coachExists) return res.status(404).json({ message: "coach do not found" });
 
