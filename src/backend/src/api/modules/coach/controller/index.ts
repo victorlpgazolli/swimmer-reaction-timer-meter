@@ -1,28 +1,28 @@
-import { Coach, Endpoint, LoginResponse, Swimmer } from "@api/types";
-
+import { Coach, Endpoint, Swimmer } from "@api/types";
 import services from "@services";
 import coachModel from "@api/modules/coach/model";
 import swimmerModel from "@api/modules/swimmer/model";
 
-const loginUser: Endpoint = (req, res) => {
+const createCoach: Endpoint = async (req, res) => {
 
+    const coachToCreate: Coach = req.body;
 
-    const userData = {
-        username: "teste",
-        password: "12321"
-    };
+    delete coachToCreate.id;
 
-    const token = services.auth.generateToken({
-        username: userData.username
-    });
+    const coachData: any = await coachModel.create(
+        {
+            ...coachToCreate,
+        },
+    )
+    const token = services.auth.generateToken(coachToCreate);
 
-    const response = {
-        username: userData.username,
+    await coachData.save();
+
+    const newCoach: Coach = {
+        ...coachData._doc,
         token
     }
-
-    res.json(response as LoginResponse)
-
+    res.json(newCoach)
 }
 
 
@@ -48,32 +48,41 @@ const deleteCoach: Endpoint = async (req, res) => {
         coachId
     } = req.params;
 
-    // coachModel.deleteOne({ id: coachId });
-    // res.json(coach)
+    await swimmerModel.deleteMany({ coachId })
+    await coachModel.deleteOne({ id: coachId });
 
     res.status(201).json()
 }
-const getCoachData: Endpoint = async (req, res) => {
+const getCoachs: Endpoint = async (req, res) => {
+
+    const coachs: Array<Coach> = await coachModel.find();
+
+    return res.json(coachs)
+}
+const getCoachById: Endpoint = async (req, res) => {
     const {
         coachId
     } = req.params;
 
+    const coach: Coach = await coachModel.findOne({ id: coachId });
 
-    // const coach:  = coachModel.findOne({ id: coachId });
-    // res.json(coach)
+    if (!coach) return res.status(404).json({ message: "coach do not found" })
 
-    res.json(coachId)
+    return res.json(coach)
 }
 
-const getSwimmersFromCoach: Endpoint = async (req, res) => {
+const findSwimmerByCoachId: Endpoint = async (req, res) => {
     const {
         coachId
     } = req.params;
 
-    // const swimmers = swimmerModel.find({ coachId });
-    // res.json(swimmers)
+    const coachExists = await coachModel.exists({ id: coachId });
 
-    res.json(coachId)
+    if (!coachExists) return res.status(404).json({ message: "coach do not found" });
+
+    const swimmers: Array<Swimmer> | null = await swimmerModel.find({ coachId });
+
+    return res.json(swimmers)
 }
 const createSwimmersForCoach: Endpoint = async (req, res) => {
     const {
@@ -84,21 +93,26 @@ const createSwimmersForCoach: Endpoint = async (req, res) => {
 
     delete swimmerToCreate.id;
 
-    // const coachData = await swimmerModel.create(
-    //     {
-    //         ...swimmerToCreate,
-    //         coachId
-    //     },
-    // )
-    // res.json(coachData);
-    res.json(swimmerToCreate)
+    const coachExists = await coachModel.exists({ id: coachId });
+
+    if (!coachExists) return res.status(404).json({ message: "coach do not found" });
+
+    const coachData = await swimmerModel.create(
+        {
+            ...swimmerToCreate,
+            coachId
+        },
+    )
+
+    res.json(coachData)
 }
 
 export default {
-    getCoachData,
+    getCoachById,
     deleteCoach,
     patchCoach,
-    getSwimmersFromCoach,
+    findSwimmerByCoachId,
     createSwimmersForCoach,
-    loginUser
+    createCoach,
+    getCoachs
 }

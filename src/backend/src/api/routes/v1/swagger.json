@@ -12,6 +12,22 @@
         "application/json"
     ],
     "paths": {
+        "/swimmer/": {
+            "get": {
+                "description": "Get all swimmers",
+                "responses": {
+                    "default": {
+                        "description": "Returns the list of swimmers",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/swimmerOutput"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/swimmer/{swimmerId}": {
             "delete": {
                 "description": "Deletes swimmer related to that coach id",
@@ -117,7 +133,46 @@
                 }
             }
         },
+        "/coach/": {
+            "post": {
+                "description": "Creates a new coach",
+                "operationId": "createCoach",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "swimmer",
+                        "description": "The swimmer to add to the coach",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/coachInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returns the newly-added coach",
+                        "schema": {
+                            "$ref": "#/definitions/coachOutput"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "description": "Returns all coachs",
+                "operationId": "getCoachs",
+                "responses": {
+                    "default": {
+                        "description": "Returns the coachs data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/coachOutput"
+                        }
+                    }
+                }
+            }
+        },
         "/coach/{coachId}": {
+          
             "get": {
                 "description": "Returns a coach by id",
                 "operationId": "getCoachById",
@@ -131,11 +186,14 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": "Returns the coach data",
                         "schema": {
                             "$ref": "#/definitions/coachOutput"
                         }
+                    },
+                    "404": {
+                        "description": "Coach not found"
                     }
                 }
             },
@@ -201,14 +259,17 @@
                     }
                 ],
                 "responses": {
-                    "default": {
+                    "200": {
                         "description": "Returns the swimmers related to that coach",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/coachOutput"
+                                "$ref": "#/definitions/swimmerOutput"
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Coach not found"
                     }
                 }
             },
@@ -253,7 +314,7 @@
                 "email": {
                     "type": "string"
                 },
-                "id": {
+                "_id": {
                     "type": "string"
                 }
             }
@@ -265,6 +326,10 @@
                 },
                 "email": {
                     "type": "string"
+                },
+                "auth_token_provider": {
+                    "type": "string",
+                    "required": false
                 }
             }
         },
@@ -280,7 +345,7 @@
                 "name": {
                     "type": "string"
                 },
-                "id": {
+                "_id": {
                     "type": "string"
                 }
             }

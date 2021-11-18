@@ -12,10 +12,12 @@ export type Coach = {
     name: string;
     email: string;
     id: string;
+    token: string | undefined;
 };
 export type Swimmer = {
     name: string;
     id: string;
+    trainings: Array<SwimmerTraining> | undefined
 };
 export type SwimmerTraining = {
     reaction_time_diff_in_milliseconds: number;

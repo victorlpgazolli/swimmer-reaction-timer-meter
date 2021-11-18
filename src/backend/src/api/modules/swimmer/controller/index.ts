@@ -1,5 +1,6 @@
 import { Endpoint, Swimmer, SwimmerTraining } from "@api/types";
 import swimmerModel from "@api/modules/swimmer/model";
+import { isValidObjectId } from "mongoose";
 
 const patchSwimmer: Endpoint = (req, res) => {
     const {
@@ -18,27 +19,32 @@ const patchSwimmer: Endpoint = (req, res) => {
     // res.json(swimmerUpdatedData);
     res.json(swimmerNewData)
 }
-const deleteSwimmer: Endpoint = (req, res) => {
+const deleteSwimmer: Endpoint = async (req, res) => {
     const {
         swimmerId: id
     } = req.params;
 
-    // swimmerModel.deleteOne({ id });
-    // res.json(coach)
+    await swimmerModel.deleteOne({ id });
 
     res.status(201).json()
 }
-const getTrainingFromSwimmer: Endpoint = (req, res) => {
+const getTrainingFromSwimmer: Endpoint = async (req, res) => {
     const {
         swimmerId: id
     } = req.params;
 
-    // const swimmer = swimmerModel.findOne({ id });
-    // res.json(
-    //     swimmer.trainings || []
-    // )
+    const swimmer: Swimmer | null = await swimmerModel.findOne({ id })
 
-    res.json(id)
+    res.json({
+        swimmer_id: id,
+        trainings: swimmer?.trainings || []
+    })
+}
+const getSwimmers: Endpoint = async (req, res) => {
+
+    const swimmers: Array<Swimmer> = await swimmerModel.find()
+
+    res.json(swimmers || [])
 }
 const createTrainingForSwimmer: Endpoint = async (req, res) => {
     const {
@@ -47,27 +53,36 @@ const createTrainingForSwimmer: Endpoint = async (req, res) => {
 
     const swimmerTrainingToCreate: SwimmerTraining = req.body;
 
-    // const swimmer = await swimmerModel.findOne(
-    //     { id },
-    // )
-    // const hasTraining = Array.isArray(swimmer.trainings);
+    const hasSwimmer = await swimmerModel.exists({ id });
 
-    // if (!hasTraining) swimmer.trainings = [];
+    if (!hasSwimmer) return res.status(404).json({ message: "swimmer do not found" });
 
-    // swimmer.trainings.push({
-    //     ...swimmerTrainingToCreate,
-    //     timestamp: new Date().toISOString()
-    // });
+    const isIdValid = isValidObjectId(id);
 
-    // await swimmerModel.updateOne(
-    //     { id },
-    //     swimmer,
-    // )
-    // res.json({
-    //     swimmer_id: id,
-    //     trainings: swimmer.trainings
-    // })
-    res.json(swimmerTrainingToCreate);
+    if (!isIdValid) return res.status(400).json({ message: "swimmerId is not valid" });
+
+    const swimmer: any = await swimmerModel.findById(
+        id
+    )
+
+    const hasTraining = Array.isArray(swimmer.trainings);
+
+    if (!hasTraining) swimmer.trainings = [];
+
+    swimmer.trainings.push({
+        ...swimmerTrainingToCreate,
+        timestamp: new Date().toISOString()
+    });
+
+    await swimmerModel.findByIdAndUpdate(
+        id,
+        swimmer,
+    )
+
+    res.json({
+        swimmer_id: id,
+        trainings: swimmer.trainings
+    })
 }
 
 export default {
@@ -75,4 +90,5 @@ export default {
     deleteSwimmer,
     getTrainingFromSwimmer,
     createTrainingForSwimmer,
+    getSwimmers
 }
