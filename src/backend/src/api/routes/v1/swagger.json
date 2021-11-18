@@ -1,0 +1,388 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Swimmer reaction time meter API",
+        "version": "1.0.0",
+        "title": "Swagger swimmer reaction time meter"
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/swimmer/": {
+            "get": {
+                "description": "Get all swimmers",
+                "responses": {
+                    "default": {
+                        "description": "Returns the list of swimmers",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/swimmerOutput"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/swimmer/{swimmerId}": {
+            "delete": {
+                "description": "Deletes swimmer related to that coach id",
+                "operationId": "deleteSwimmer",
+                "parameters": [
+                    {
+                        "name": "coachId",
+                        "in": "path",
+                        "description": "coach Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Ok"
+                    }
+                }
+            },
+            "patch": {
+                "description": "Updates a swimmer data",
+                "parameters": [
+                    {
+                        "name": "coachId",
+                        "in": "path",
+                        "description": "coach Id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "swimmer",
+                        "description": "The updated swimmer info",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swimmerInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Returns the updated coach data",
+                        "schema": {
+                            "$ref": "#/definitions/swimmerOutput"
+                        }
+                    }
+                }
+            }
+        },
+        "/swimmer/{swimmerId}/trainings": {
+            "get": {
+                "description": "Get a list of training for a swimmer",
+                "parameters": [
+                    {
+                        "name": "swimmerId",
+                        "in": "path",
+                        "description": "Swimmer Id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the list of trainings data",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/trainingOutput"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new training for swimmer",
+                "operationId": "addTrainingForSwimmer",
+                "parameters": [
+                    {
+                        "name": "swimmerId",
+                        "in": "path",
+                        "description": "Swimmer Id",
+                        "required": true
+                    },
+                    {
+                        "name": "swimmer id",
+                        "in": "query",
+                        "description": "swimmer to create new training",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "training data",
+                        "description": "training information",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/trainingInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Ok"
+                    }
+                }
+            }
+        },
+        "/coach/": {
+            "post": {
+                "description": "Creates a new coach",
+                "operationId": "createCoach",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "swimmer",
+                        "description": "The swimmer to add to the coach",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/coachInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returns the newly-added coach",
+                        "schema": {
+                            "$ref": "#/definitions/coachOutput"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "description": "Returns all coachs",
+                "operationId": "getCoachs",
+                "responses": {
+                    "default": {
+                        "description": "Returns the coachs data",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/coachOutput"
+                        }
+                    }
+                }
+            }
+        },
+        "/coach/{coachId}": {
+          
+            "get": {
+                "description": "Returns a coach by id",
+                "operationId": "getCoachById",
+                "parameters": [
+                    {
+                        "name": "coachId",
+                        "in": "path",
+                        "description": "coach Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the coach data",
+                        "schema": {
+                            "$ref": "#/definitions/coachOutput"
+                        }
+                    },
+                    "404": {
+                        "description": "Coach not found"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes a coach and its swimmers",
+                "operationId": "deleteCoach",
+                "parameters": [
+                    {
+                        "name": "coachId",
+                        "in": "path",
+                        "description": "coach Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Ok"
+                    }
+                }
+            },
+            "patch": {
+                "description": "Updates a coach data",
+                "parameters": [
+                    {
+                        "name": "coachId",
+                        "in": "path",
+                        "description": "coach Id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "coach",
+                        "description": "The updated coach info",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/coachInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Returns the updated coach data",
+                        "schema": {
+                            "$ref": "#/definitions/coachOutput"
+                        }
+                    }
+                }
+            }
+        },
+        "/coach/{coachId}/swimmers/": {
+            "get": {
+                "description": "Returns all swimmers for coach",
+                "operationId": "findSwimmerByCoachId",
+                "parameters": [
+                    {
+                        "name": "coachId",
+                        "in": "path",
+                        "description": "coach Id",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the swimmers related to that coach",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/swimmerOutput"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Coach not found"
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new swimmer in the for coach",
+                "operationId": "addSwimmer",
+                "parameters": [
+                    {
+                        "name": "coachId",
+                        "in": "path",
+                        "description": "coach Id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "swimmer",
+                        "description": "The swimmer to add to the coach",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/swimmerInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Returns the newly-added swimmer",
+                        "schema": {
+                            "$ref": "#/definitions/swimmerOutput"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "coachOutput": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "coachInput": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "auth_token_provider": {
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "swimmerInput": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "swimmerOutput": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "trainingInput": {
+            "properties": {
+                "reaction_time_diff_in_milliseconds": {
+                    "type": "integer"
+                }
+            }
+        },
+        "trainingOutput": {
+            "properties": {
+                "swimmer_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "trainings": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        }
+    },
+    "parameters": {
+        "swimmerId": {
+            "name": "swimmerId",
+            "in": "path",
+            "description": "Swimmer Id",
+            "required": true
+        },
+        "coachId": {
+            "name": "coachId",
+            "in": "path",
+            "description": "coach Id",
+            "required": true,
+            "type": "string"
+        }
+    }
+}
