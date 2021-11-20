@@ -1,15 +1,21 @@
-import parse from '@services/websocket/middlewares/parse'
-import getAction from '@services/websocket/middlewares/action'
+class WebsocketMiddlewares {
+    middlewares = []
 
-const initMiddlewares = () => {
+    constructor() {
+        this.middlewares = [];
+    }
+    use(...values) {
+        this.middlewares.push(...values)
+    }
+    execute(initialValue) {
 
-    return async (initalData = "") => {
-        const parsedValues = await parse(initalData);
+        const finalValue = this.middlewares.reduce(
+            async (acc, fn) => fn(await acc),
+            initialValue
+        );
 
-        const handler = await getAction(parsedValues);
-
-        return handler
+        return finalValue;
     }
 }
 
-export default initMiddlewares()
+export default WebsocketMiddlewares

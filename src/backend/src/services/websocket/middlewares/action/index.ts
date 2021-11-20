@@ -4,8 +4,8 @@ import { ActionMiddleware, ParsedMessage } from "@services/websocket/types";
 const getAction: ActionMiddleware = async (payload: ParsedMessage) => {
 
     const actionPerCommand = {
-        [payload.command]: async (message) => { },
-        training: async (message) => { },
+        [payload.command]: async (message) => { console.log(message) },
+        training: async (message) => { console.log(message) },
     }
 
     const action = actionPerCommand[payload.command];
