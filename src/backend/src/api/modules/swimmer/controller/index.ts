@@ -64,7 +64,7 @@ const getTrainingFromSwimmer: Endpoint = async (req, res) => {
 }
 const getSwimmers: Endpoint = async (req, res) => {
 
-    const swimmers: Array<Swimmer> = await swimmerModel.find()
+    const swimmers: Swimmer[] = await swimmerModel.find()
 
     res.json(swimmers || [])
 }

@@ -18,7 +18,7 @@ export type Swimmer = {
     name: string;
     id: string;
     coachId: string;
-    trainings: Array<SwimmerTraining> | undefined
+    trainings: SwimmerTraining[] | undefined
 };
 export type SwimmerTraining = {
     reaction_time_diff_in_milliseconds: number;

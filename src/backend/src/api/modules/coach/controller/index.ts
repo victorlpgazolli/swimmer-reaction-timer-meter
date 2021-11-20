@@ -71,7 +71,7 @@ const deleteCoach: Endpoint = async (req, res) => {
 }
 const getCoachs: Endpoint = async (req, res) => {
 
-    const coachs: Array<Coach> = await coachModel.find();
+    const coachs: Coach[] = await coachModel.find();
 
     return res.json(coachs)
 }
@@ -104,7 +104,7 @@ const findSwimmerByCoachId: Endpoint = async (req, res) => {
 
     if (!coachExists) return res.status(404).json({ message: "coach do not found" });
 
-    const swimmers: Array<Swimmer> | null = await swimmerModel.find({ coachId });
+    const swimmers: Swimmer[] | null = await swimmerModel.find({ coachId });
 
     return res.json(swimmers)
 }
