@@ -1,0 +1,12 @@
+{
+    "name": "swimmer-reaction-timer-meter",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src",
+    "scripts": {
+        "backend:start": "cd src/backend; npm run start"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

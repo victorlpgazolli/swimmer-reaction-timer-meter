@@ -8,7 +8,9 @@
     "start": "ts-node -r tsconfig-paths/register -r ts-node ./src/app.ts",
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
-    "prestart": "npm run build"
+    "prestart": "npm run validate",
+    "validate": "test -r ./node_modules || npm ci",
+    "postvalidate": "npm run build"
   },
   "keywords": [],
   "author": "",
