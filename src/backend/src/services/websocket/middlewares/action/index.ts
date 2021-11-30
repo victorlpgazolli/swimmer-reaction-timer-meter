@@ -22,7 +22,7 @@ const getAction: ActionMiddleware = async (payload: ParsedMessage) => {
 
             if(!currentSwimmer) {
               console.log(`No current swimmer for ${reaction_time_diff_in_milliseconds}, exiting...`);
-              return; 
+              return;
             }
             const {
               id: currentSwimmerId,
@@ -33,7 +33,7 @@ const getAction: ActionMiddleware = async (payload: ParsedMessage) => {
               String(currentSwimmerId).length > 0,
               "currentSwimmerId should exists"
             );
-            
+
             const createNewTrainingUrl = config.apiFullUrl + config.apiBaseURL + `/v1/swimmer/${currentSwimmerId}/trainings`;
 
             await axios.post(createNewTrainingUrl, {
@@ -43,7 +43,7 @@ const getAction: ActionMiddleware = async (payload: ParsedMessage) => {
           } catch (error) {
             console.log(error.message);
           }
-         
+
         },
     }
 

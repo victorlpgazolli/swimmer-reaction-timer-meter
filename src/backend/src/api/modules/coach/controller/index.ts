@@ -114,7 +114,7 @@ const createSwimmersForCoach: Endpoint = async (req, res) => {
     } = req.params;
 
     const swimmerPayload: Swimmer = req.body;
-    
+
     const swimmerToCreate = {
       ...swimmerPayload,
       isCurrent: false,
