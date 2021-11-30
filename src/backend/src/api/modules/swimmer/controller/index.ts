@@ -105,11 +105,18 @@ const createTrainingForSwimmer: Endpoint = async (req, res) => {
         trainings: swimmer.trainings
     })
 }
+const getCurrentTrainingSwimmer: Endpoint = async (req, res) => {
+
+    const swimmer: Swimmer[] | null = await swimmerModel.find({ isCurrent: true });
+
+    return res.json(swimmer)
+}
 
 export default {
     patchSwimmer,
     deleteSwimmer,
     getTrainingFromSwimmer,
     createTrainingForSwimmer,
-    getSwimmers
+    getSwimmers,
+    getCurrentTrainingSwimmer,
 }

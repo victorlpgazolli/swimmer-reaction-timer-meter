@@ -113,7 +113,12 @@ const createSwimmersForCoach: Endpoint = async (req, res) => {
         coachId
     } = req.params;
 
-    const swimmerToCreate: Swimmer = req.body;
+    const swimmerPayload: Swimmer = req.body;
+    
+    const swimmerToCreate = {
+      ...swimmerPayload,
+      isCurrent: false,
+    };
 
     delete swimmerToCreate.id;
 

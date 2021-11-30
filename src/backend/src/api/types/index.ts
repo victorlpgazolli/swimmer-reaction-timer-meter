@@ -18,6 +18,7 @@ export type Swimmer = {
     name: string;
     id: string;
     coachId: string;
+    isCurrent: boolean;
     trainings: SwimmerTraining[] | undefined
 };
 export type SwimmerTraining = {
