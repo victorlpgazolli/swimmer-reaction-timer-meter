@@ -9,7 +9,7 @@
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "prestart": "npm run validate",
-    "validate": "test -r ./node_modules || npm ci",
+    "validate": "test -r ./node_modules || npm i",
     "postvalidate": "npm run build"
   },
   "keywords": [],
