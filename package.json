@@ -4,7 +4,7 @@
     "description": "",
     "main": "src",
     "scripts": {
-        "backend:start": "cd src/backend; npm run start"
+        "start": "cd src/backend; npm run start"
     },
     "keywords": [],
     "author": "",
