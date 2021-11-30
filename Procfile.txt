@@ -1,1 +1,1 @@
-worker: npm run backend:start
+web: npm start
