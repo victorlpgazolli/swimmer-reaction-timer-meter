@@ -12,6 +12,10 @@ const SwimmerSchema = new Schema({
         type: String,
         required: true
     },
+    isCurrent: {
+        type: Boolean,
+        required: true
+    },
     trainings: [
         {
             reaction_time_diff_in_milliseconds: {

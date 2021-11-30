@@ -12,4 +12,5 @@ export default {
     jwtSecret: process.env.JWT_SECRET as string,
     jwtAlgorithm: process.env.JWT_ALGORITHM as string,
     apiBaseURL: process.env.BASE_URL as string,
+    apiFullUrl: process.env.URL as string,
 };
