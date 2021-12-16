@@ -1,7 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
+import { useCoach, useConnectedDevices } from 'hooks';
 
 function App() {
+  const devices = useConnectedDevices();
+  console.log({ devices });
   return (
     <div className="App">
       <header className="App-header">
