@@ -15,6 +15,7 @@ const initServer = ({ app }: { app: Application }) => {
     const wss = new Server({ server });
 
     wss.on("connection", function connection(client) {
+        console.info("[websocket]: new client has joined")
         events.onConnect({
             client,
             server: wss
