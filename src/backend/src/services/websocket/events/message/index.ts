@@ -10,6 +10,8 @@ const handler = ({ client, server }) => {
   websocketMiddleware.use(getAction);
 
   client.on("message", async (rawData = "") => {
+    console.info("[websocket]: new message: " + rawData);
+
     const action = await websocketMiddleware.execute(rawData);
 
     await action()
