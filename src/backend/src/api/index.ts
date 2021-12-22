@@ -29,7 +29,7 @@ const corsOptions = {
 const initServer = ({ app }: { app: express.Application }) => {
 
     app.set('port', config.port);
-    
+
     app.use(cors(corsOptions));
 
     app.use(express.json());
@@ -43,7 +43,7 @@ const initServer = ({ app }: { app: express.Application }) => {
         middlewares.errors
     )
 
-    app.get('/', function (req, res) {
+    app.get('/', (req, res) => {
         res.sendfile('src/static/index.html');
     });
 
