@@ -1,17 +1,12 @@
-
-import message from '@services/websocket/events/message'
-import ping from '@services/websocket/events/ping'
-
-
-const registerListeners = ({ client, server }) => {
-    const listeners = [
-        message,
-        ping
-    ]
-
-    listeners.forEach(fn => fn({ client, server }));
-
+export const EVENTS_NAMES = {
+    training: "training",
+    hello: "hello"
 }
+import trainingListener from './training'
+import helloListener from './hello'
+
 export default {
-    onConnect: registerListeners,
+    EVENTS_NAMES,
+    trainingListener,
+    helloListener
 }
