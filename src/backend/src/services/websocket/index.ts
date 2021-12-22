@@ -8,7 +8,13 @@ import { Server } from 'http';
 
 const initServer = ({ server }: { app: Application, server: Server }) => {
 
-    const io = new WebSocketServer(server, { transports: ['websocket', 'polling'] });
+    const io = new WebSocketServer(server, {
+        transports: ['websocket', 'polling'],
+        cors: {
+            origin: "*",
+            credentials: true
+        }
+    });
 
     console.log("[websocket] started websocket service");
 
