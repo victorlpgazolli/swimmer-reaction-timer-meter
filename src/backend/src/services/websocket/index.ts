@@ -2,24 +2,24 @@
 import {
     Application
 } from 'express';
-import {
-    Server,
-} from 'ws';
+import { Server } from "socket.io";
 import http from 'http';
-import events from '@services/websocket/events';
+import events, { EVENTS_NAMES } from '@services/websocket/events';
 
 const initServer = ({ app }: { app: Application }) => {
 
     const server = http.createServer(app);
 
-    const wss = new Server({ server });
+    const io = new Server(server);
 
-    wss.on("connection", function connection(client) {
-        console.info("[websocket]: new client has joined")
-        events.onConnect({
-            client,
-            server: wss
-        })
+    io.on('connection', (client) => {
+
+        console.log("[websocket] new client connected", client);
+
+        client.on(EVENTS_NAMES.training, events.trainingListener);
+
+        client.on(EVENTS_NAMES.hello, events.helloListener);
+
     });
 
 }
