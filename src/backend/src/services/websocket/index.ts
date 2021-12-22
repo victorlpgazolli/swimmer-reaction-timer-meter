@@ -29,7 +29,7 @@ const initServer = ({ server }: { app: Application, server: Server }) => {
 
         clients.add(clientId);
 
-        io.emit(EVENTS_NAMES.clientsLength, { clients: Array.from(clients.entries()) })
+        io.emit(EVENTS_NAMES.clientsLength, { clients: Array.from(clients.values()) })
 
         console.log("[websocket] new client connected: ", clientId);
 

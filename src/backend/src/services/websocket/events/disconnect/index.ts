@@ -11,12 +11,12 @@ export default ({
     if (clientWasADevice) {
         devices.delete(id);
         io.to(ROOMS_NAMES.devices_listeners).emit(EVENTS_NAMES.devicesLength, {
-            devices: Array.from(devices.entries())
+            devices: Array.from(devices.values())
         })
     }
     console.log("[websocket] client disconnected: ", id);
     clients.delete(id);
     io.emit(EVENTS_NAMES.clientsLength, {
-        clients: Array.from(clients.entries())
+        clients: Array.from(clients.values())
     })
 }
