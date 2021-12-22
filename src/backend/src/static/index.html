@@ -7,9 +7,13 @@
 <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"></script>
 
 <script>
-    const socket = io("localhost:8082");
+                window.socket = io.connect("ws://localhost:8082");
 </script>
 
-<body>Hello</body>
+<body>
+    Page for testing websocket.
+    <br>
+    websocket is available at window.socket
+</body>
 
 </html>
