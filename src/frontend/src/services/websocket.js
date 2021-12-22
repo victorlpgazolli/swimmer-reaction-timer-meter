@@ -5,9 +5,6 @@ export const websocket = {
     connect: () => {
         socket = socketClient(WEBSOCKET_URL)
         window.socket = socket;
+        return socket
     },
-    emit: (eventName, payload) => {
-        socket.emit(eventName, payload)
-    },
-    on: (eventName, callback) => socket.on(eventName, callback)
 }
