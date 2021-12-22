@@ -4,6 +4,7 @@ import cors from 'cors';
 import routes from '@api/routes';
 import config from '@config';
 import middlewares from '@api/middlewares';
+import http, { Server } from 'http';
 
 const whitelist = {
     "https://swimmer-reaction-timer-meter.herokuapp.com": true,
@@ -46,17 +47,19 @@ const initServer = ({ app }: { app: express.Application }) => {
         res.sendfile('src/static/index.html');
     });
 
+    const server = http.createServer(app);
+
     return {
         start: (
-            callback: () => void = () => console.log(`Started server on port ${app.get("port")}`)
-        ) => app.listen(
+            callback: () => void = () => console.log(`[api] started server on port ${app.get("port")}`)
+        ) => server.listen(
             app.get("port"),
             callback
         ),
         attach: (
-            callback: ({ app }: { app: express.Application }) => void
+            callback: ({ app, server }: { app: express.Application, server: Server }) => void
         ) => {
-            callback({ app });
+            callback({ app, server });
         }
     }
 }
