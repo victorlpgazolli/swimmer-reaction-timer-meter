@@ -2,27 +2,27 @@
 import {
     Application
 } from 'express';
-import {
-    Server,
-} from 'ws';
-import http from 'http';
-import events from '@services/websocket/events';
+import { Server as WebSocketServer } from "socket.io";
+import events, { EVENTS_NAMES } from '@services/websocket/events';
+import { Server } from 'http';
 
-const initServer = ({ app }: { app: Application }) => {
+const initServer = ({ server }: { app: Application, server: Server }) => {
 
-    const server = http.createServer(app);
+    const io = new WebSocketServer(server, { transports: ['websocket', 'polling'] });
 
-    const wss = new Server({ server });
+    console.log("[websocket] started websocket service");
 
-    wss.on("connection", function connection(client) {
-        console.info("[websocket]: new client has joined")
-        events.onConnect({
-            client,
-            server: wss
-        })
+    io.on('connection', (client) => {
+
+        console.log("[websocket] new client connected: ", client.id);
+
+        client.on(EVENTS_NAMES.training, events.trainingListener);
+
+        client.on(EVENTS_NAMES.hello, events.helloListener);
+
     });
 
 }
 
 
-export default ({ app: expressApp }) => initServer({ app: expressApp })
+export default ({ app: expressApp, server }) => initServer({ app: expressApp, server })
