@@ -1,4 +1,4 @@
-sensorIR = 13;
+int sensorIR = 13;
 void setup() {
 Serial.begin(9600);
 pinMode (sensorIR, OUTPUT);
