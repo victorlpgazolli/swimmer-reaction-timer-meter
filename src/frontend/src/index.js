@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { DevicesProvider } from 'contexts';
+import Router from 'Router';
+// import 'resources/css/global.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <DevicesProvider>
-    <App />
-    </ DevicesProvider>
+    <Router />
   </React.StrictMode>,
   document.getElementById('root')
 );
