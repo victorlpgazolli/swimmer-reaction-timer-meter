@@ -11,3 +11,10 @@ Configurando o ESP8266
 Instalando o drive CH340
 
 - Acesse o site https://sparks.gogo.co.nz/ch340.html e baixe o driver de acordo com o seu sistema operacional
+-----------------------------------------------------------------------------
+
+Library WiFiEsp.h
+https://github.com/bportaluri/WiFiEsp/blob/master/src/WiFiEsp.h
+
+WiFI.status()
+https://www.arduino.cc/en/Reference/WiFiStatus
