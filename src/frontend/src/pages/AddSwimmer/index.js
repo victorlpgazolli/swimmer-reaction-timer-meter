@@ -37,27 +37,64 @@ function AddSwimmerPage({
                         flexDirection: "column"
                     }}>
 
-                    <h4>Adicionar nadador</h4>
+                    <h4 style={{
+                        color: "white",
+                        fontSize: 25,
+                        margin: 0,
+                    }}>Adicionar nadador</h4>
                     <form style={{
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "center",
                         flex: 1,
+                        width: "100%"
                     }}>
-                        <p>Nome</p>
-                        <input placeholder='Fulano' />
-                        <p>Sobrenome</p>
-                        <input placeholder='De tal' />
+                        <p style={{
+                            marginBottom: 5,
+                            color: "#fff"
+                        }}>Nome</p>
+                        <input style={{
+                            padding: 10,
+                            borderRadius: 12,
+                            borderColor: "transparent",
+                        }} placeholder='Fulano' />
+                        <p style={{
+                            marginBottom: 5,
+                            color: "#fff"
+                        }}>Sobrenome</p>
+                        <input style={{
+                            padding: 10,
+                            borderRadius: 12,
+                            borderColor: "transparent",
+                        }} placeholder='De tal' />
                         <div
                             style={{
                                 display: "flex",
                                 flex: 1,
                                 flexDirection: "column",
                                 justifyContent: "center",
-                                alignItems: "center"
+                                alignItems: "center",
+                                paddingTop: 10
                             }}>
-                            <button>Cadastrar</button>
-                            <a href='#/nadadores'>Cancelar</a>
+                            <button style={{
+                                padding: 10,
+                                display: "flex",
+                                flex: 1,
+                                width: "100%",
+                                justifyContent: "center",
+                                borderRadius: 12,
+                                borderColor: "transparent",
+                                color: "white",
+                                background: "#50BBCA",
+                                margin: "10px 0",
+                                fontSize: 14,
+                            }}>Cadastrar</button>
+                            <a
+                                style={{
+                                    color: "#8CE6F5",
+                                    fontSize: 14,
+                                }}
+                                href='#/nadadores'>Cancelar</a>
                         </div>
                     </form>
                 </div>
