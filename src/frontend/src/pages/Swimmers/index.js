@@ -47,14 +47,19 @@ function SwimmersPage({
                         placeholder='Procurar nadador' />
                 </Header>
                 <SwimmerContent>
-                    <SwimmerCollapsed>
-                        <SwimmerName>
-                            nome
-                        </SwimmerName>
-                        <SwimmerToggle>
-                            toggle
-                        </SwimmerToggle>
-                    </SwimmerCollapsed>
+                    {
+                        swimmers.map(swimmer => (
+                            <SwimmerCollapsed>
+                                <SwimmerName>
+                                    {swimmer.name}
+                                </SwimmerName>
+                                <SwimmerToggle>
+                                    toggle
+                                </SwimmerToggle>
+                            </SwimmerCollapsed>
+                        ))
+                    }
+
                     <SwimmerOpen>
                         <div>
                             <SwimmerNameOpen>

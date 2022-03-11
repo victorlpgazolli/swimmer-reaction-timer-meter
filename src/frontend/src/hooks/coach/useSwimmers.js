@@ -8,9 +8,12 @@ export const useSwimmers = () => {
     const swimmers = useSelector(swimmersSelector);
     const dispatch = useDispatch();
 
-    const addSwimmer = useCallback((...swimmer) => {
+    const addSwimmer = useCallback(({
+        firstName,
+        lastName
+    }) => {
         return dispatch(createSwimmer({
-            ...swimmer,
+            name: [firstName, lastName].join(" "),
             coachId: coach.id
         }))
     }, [coach]);
