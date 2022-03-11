@@ -13,8 +13,8 @@ Instalando o drive CH340
 - Acesse o site https://sparks.gogo.co.nz/ch340.html e baixe o driver de acordo com o seu sistema operacional
 -----------------------------------------------------------------------------
 
-Library WiFiEsp.h
-https://github.com/bportaluri/WiFiEsp/blob/master/src/WiFiEsp.h
+Library ESPWIFI.h
+Essa biblioteca vem junto com quando adiciona o ESP no Arduino IDE, então não precisa baixar ou instalar.
 
-WiFI.status()
+WiFI.status() (se precisar)
 https://www.arduino.cc/en/Reference/WiFiStatus
