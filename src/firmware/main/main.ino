@@ -1,4 +1,8 @@
-#include "WiFiEsp.h"
+#include <ESP8266WiFi.h>
+
+// Id e password do Wi-fi
+#define ssid "VINICIUS_2G"
+#define password  "vini2014"
 
 int sensorIR    = 15;
 int ledON_OFF   = 14;
@@ -7,11 +11,9 @@ int ledSensor   = 12;
 
 int WiFiConectado = LOW;
 
+//"alledraB_2.4G";
+//"15072000";
 
-// Id e password do Wi-fi
-char ssid[] = "alledraB_2.4G";
-char pass[]= "15072000";
-int status = WL_IDLE_STATUS;
 
 void setup() {
  
@@ -23,28 +25,29 @@ void setup() {
   //Status do Microcontrolador
   digitalWrite(ledON_OFF, HIGH);
     
-  // Conectando no WIFI
-  while ( status != WL_CONNECTED) {
-    Serial.print("Conecntando no ssid: ");
-    Serial.println(ssid);
-    status = WiFi.begin(ssid, pass);
-    
-    digitalWrite(ledWiFI,LOW);
-
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
   }
-
-  Serial.println("Conectado");
+  
+  Serial.println("");
+  Serial.println("WiFi connected");
   digitalWrite(ledWiFI,HIGH);
-
+  
 }
 
 void loop() {
-
-  //Verificação do status WiFi
+  
   if (digitalRead(WiFi.status() != WL_CONNECTED))
   {
-    digitalWrite(ledWiFI, LOW);  
+    digitalWrite(ledWiFI, LOW); 
+    Serial.println("wifi conetadoo"); 
   }
+ 
 
   //Condição do sensor
   if (digitalRead(sensorIR) == HIGH)
@@ -57,4 +60,5 @@ void loop() {
   Serial.write("Salto realizado");
   digitalWrite(ledSensor,LOW);
   }
+  
 }
