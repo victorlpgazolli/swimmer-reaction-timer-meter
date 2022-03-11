@@ -1,4 +1,3 @@
-import { API_URL } from "config/environment"
 import api from "services/api"
 
 export const createCoach = async ({
@@ -6,9 +5,18 @@ export const createCoach = async ({
     email = "",
     auth_token_provider = ""
 }) => {
-    await api.post(API_URL, {
+    const url = "/coach"
+    const {
+        data: {
+            _id: coachId
+        }
+    } = await api.post(url, {
         name,
         email,
         auth_token_provider
-    })
+    });
+
+    return {
+        coachId
+    }
 }

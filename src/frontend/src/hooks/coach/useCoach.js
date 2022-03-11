@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { CoachContext } from "contexts";
+import { useSelector } from "react-redux";
+import { coachSelector } from "store/features/coach/selectors";
 
 export const useCoach = () => {
-    const context = useContext(CoachContext);
+    const coach = useSelector(coachSelector)
 
-    return context
+    return coach
 }

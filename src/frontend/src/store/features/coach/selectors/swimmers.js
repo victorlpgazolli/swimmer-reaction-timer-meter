@@ -1,0 +1,1 @@
+export const swimmersSelector = state => state.coach.swimmers

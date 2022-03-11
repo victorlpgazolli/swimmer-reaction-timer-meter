@@ -1,0 +1,1 @@
+export const coachSelector = state => state.coach.coach

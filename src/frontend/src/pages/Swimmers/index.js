@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useSwimmers } from 'hooks';
 import swimmerBackground from 'resources/img/nadador.svg'
 function SwimmersPage({
     navigation
 }) {
+    const dispatch = useDispatch();
+    const {
+        swimmers,
+        loadSwimmers
+    } = useSwimmers();
 
+    useEffect(() => {
+        loadSwimmers()
+    }, [])
+    useEffect(() => {
+        console.log(swimmers);
+    }, [swimmers])
     return (
         <div
             style={{

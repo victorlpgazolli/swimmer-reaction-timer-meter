@@ -1,118 +1,71 @@
 import React from 'react'
-import swimmerBackground from 'resources/img/nadador.svg'
+import { SwimmerBackgroundImage } from 'resources/css/common'
+import { Body, Button, CancelButton, Content, Form, FormView } from './style'
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import { useSwimmers } from 'hooks';
+const FIELDS = {
+    firstName: "firstName",
+    lastName: "lastName",
+}
+const schema = yup.object({
+    [FIELDS.firstName]: yup.string().required("Nome é obrigatório"),
+    [FIELDS.lastName]: yup.string().required("Sobrenome é obrigatório"),
+}).required();
+
 function AddSwimmerPage({
     navigation
 }) {
+    const {
+        addSwimmer
+    } = useSwimmers();
 
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema)
+    });
+
+    const onSubmit = async ({
+        firstName,
+        lastName
+    }) => {
+        await addSwimmer({
+            firstName,
+            lastName
+        });
+        // navigation.pop()
+    }
     return (
-        <div
-            style={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 40,
-            }}
-        >
-
-            <div
-                style={{
-                    flex: 1,
-                    display: "flex",
-                    justifyContent: "center",
-                    padding: 15,
-                    borderRadius: 14,
-                    flexDirection: "column",
-                    backgroundColor: "#0B4C55",
-                }}>
-
-
-                <div
-                    style={{
-                        flex: 1,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        padding: 15,
-                        flexDirection: "column"
-                    }}>
-
-                    <h4 style={{
-                        color: "white",
-                        fontSize: 25,
-                        margin: 0,
-                    }}>Adicionar nadador</h4>
-                    <form style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        flex: 1,
-                        width: "100%"
-                    }}>
-                        <p style={{
-                            marginBottom: 5,
-                            color: "#fff"
-                        }}>Nome</p>
-                        <input style={{
-                            padding: 10,
-                            borderRadius: 12,
-                            borderColor: "transparent",
-                        }} placeholder='Fulano' />
-                        <p style={{
-                            marginBottom: 5,
-                            color: "#fff"
-                        }}>Sobrenome</p>
-                        <input style={{
-                            padding: 10,
-                            borderRadius: 12,
-                            borderColor: "transparent",
-                        }} placeholder='De tal' />
-                        <div
-                            style={{
-                                display: "flex",
-                                flex: 1,
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                paddingTop: 10
-                            }}>
-                            <button style={{
-                                padding: 10,
-                                display: "flex",
-                                flex: 1,
-                                width: "100%",
-                                justifyContent: "center",
-                                borderRadius: 12,
-                                borderColor: "transparent",
-                                color: "white",
-                                background: "#50BBCA",
-                                margin: "10px 0",
-                                fontSize: 14,
-                            }}>Cadastrar</button>
-                            <a
-                                style={{
-                                    color: "#8CE6F5",
-                                    fontSize: 14,
-                                }}
-                                href='#/nadadores'>Cancelar</a>
+        <Body>
+            <Content>
+                <FormView
+                    onSubmit={handleSubmit(onSubmit)}
+                >
+                    <h4>Adicionar nadador</h4>
+                    <Form  >
+                        <p>Nome</p>
+                        <input
+                            {...register(FIELDS.firstName, { required: true })}
+                            placeholder='Fulano' />
+                        {errors.firstName && <label>{errors.firstName.message}</label>}
+                        <p>Sobrenome</p>
+                        <input
+                            {...register(FIELDS.lastName, { required: true })}
+                            placeholder='De tal' />
+                        {errors.lastName && <label>{errors.lastName.message}</label>}
+                        <div>
+                            <Button>Cadastrar</Button>
+                            <CancelButton
+                                href='#/nadadores'
+                            >
+                                Cancelar
+                            </CancelButton>
                         </div>
-                    </form>
-                </div>
-
-            </div>
-            <div
-                style={{
-                    position: "absolute",
-                    left: "10.13%",
-                    right: "10.4%",
-                    top: "81.41%",
-                    bottom: "5.4%",
-                    backgroundImage: `url(${swimmerBackground})`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "contain"
-                }}
-            />
-        </div>
+                    </Form>
+                </FormView>
+            </Content>
+            <SwimmerBackgroundImage />
+        </Body>
     )
 }
 

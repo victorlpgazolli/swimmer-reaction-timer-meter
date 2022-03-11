@@ -1,23 +1,28 @@
 import axios from 'axios';
+import { API_URL } from 'config/environment';
 
 
 const api = axios.create({
-    baseURL: "",
+    baseURL: API_URL,
 })
 
 
 api.interceptors.request.use(
     (request) => {
-        console.log(request.url);
+        return request
     },
-    (error) => { }
+    (error) => {
+        return error
+    }
 );
 
 api.interceptors.response.use(
     (response) => {
-
+        return response
     },
-    (error) => { }
+    (error) => {
+        return error
+    }
 );
 
 export default api
