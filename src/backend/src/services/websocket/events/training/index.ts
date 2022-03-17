@@ -15,7 +15,7 @@ export default async (payload: SwimmerTraining, callback) => {
 
         if (!hasReactionTime) throw new Error("reaction_time_diff_in_milliseconds should be > 0")
 
-        callback && callback({
+        if (callback) callback({
             status: 1,
         })
 
@@ -48,7 +48,7 @@ export default async (payload: SwimmerTraining, callback) => {
     } catch (error) {
         console.log("[websocket] training message with error: ", error.message);
 
-        callback && callback({
+        if (callback) callback({
             status: 0,
             error: error.message
         })

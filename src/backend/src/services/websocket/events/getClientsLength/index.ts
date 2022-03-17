@@ -2,7 +2,7 @@ export default ({
     clients = new Set(),
     callback,
 }) => {
-    callback && callback({
+    if (callback) callback({
         clients: Array.from(clients.values())
     });
 }
