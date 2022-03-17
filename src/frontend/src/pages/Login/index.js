@@ -8,6 +8,7 @@ function LoginPage({
     return (
         <div
             style={{
+                height: "100%",
                 flex: 1,
                 display: "flex",
                 justifyContent: "center",

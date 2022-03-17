@@ -1,7 +1,6 @@
 import React from 'react'
 import { Route, Switch, Redirect } from 'react-router';
 import { HashRouter } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import LoginPage from 'pages/Login';
 import App from 'App';
 import { DevicesProvider } from 'contexts';
@@ -26,11 +25,6 @@ function Router() {
     return (
         <>
             <DevicesProvider>
-                <ToastContainer
-                    autoClose={5000}
-                    hideProgressBar
-                    closeButton={<CloseButton />}
-                />
                 <HashRouter>
                     <Switch>
                         {/* <Route path="/" exact render={() => <Redirect to="/app/main" />} />

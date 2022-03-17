@@ -48,7 +48,7 @@ function SwimmersPage({
                 </Header>
                 <SwimmerContent>
                     {
-                        swimmers.map(swimmer => (
+                        swimmers?.map(swimmer => (
                             <SwimmerCollapsed>
                                 <SwimmerName>
                                     {swimmer.name}

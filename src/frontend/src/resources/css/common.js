@@ -9,5 +9,6 @@ export const SwimmerBackgroundImage = styled.div(({ props }) => ({
     bottom: "5.4%",
     backgroundImage: `url(${swimmerBackground})`,
     backgroundRepeat: "no-repeat",
-    backgroundSize: "contain"
+    backgroundSize: "contain",
+    backgroundPosition: "center",
 }))

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SwimmerBackgroundImage } from 'resources/css/common'
 import { Body, Button, CancelButton, Content, Form, FormView } from './style'
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useSwimmers } from 'hooks';
+import toast from 'react-hot-toast';
 const FIELDS = {
     firstName: "firstName",
     lastName: "lastName",
@@ -15,7 +16,7 @@ const schema = yup.object({
 }).required();
 
 function AddSwimmerPage({
-    navigation
+    history
 }) {
     const {
         addSwimmer
@@ -33,7 +34,8 @@ function AddSwimmerPage({
             firstName,
             lastName
         });
-        // navigation.pop()
+        toast.success("Nadador adicionado com sucesso!")
+        history.goBack()
     }
     return (
         <Body>
