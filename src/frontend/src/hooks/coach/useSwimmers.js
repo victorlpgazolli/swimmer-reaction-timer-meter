@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createSwimmer, fetchSwimmers } from "store/features/coach/actions";
+import { createSwimmer, fetchSwimmers, setSwimmerAsCurrent } from "store/features/coach/actions";
 import { coachSelector, swimmersSelector } from "store/features/coach/selectors";
 
 export const useSwimmers = () => {
@@ -24,9 +24,16 @@ export const useSwimmers = () => {
         }))
     }, [coach]);
 
+    const startTrainingForSwimmer = useCallback(({ swimmerId }) => {
+        return dispatch(setSwimmerAsCurrent({
+            swimmerId
+        }))
+    }, []);
+
     return {
         swimmers,
         loadSwimmers,
-        addSwimmer
+        addSwimmer,
+        startTrainingForSwimmer
     }
 }

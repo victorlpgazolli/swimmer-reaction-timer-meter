@@ -19,12 +19,14 @@ import {
     SwimmerJumpName,
     SwimmerJumpTime,
 } from './style';
+import Toggle from './toggle';
 function SwimmersPage({
     navigation
 }) {
     const {
         swimmers,
-        loadSwimmers
+        loadSwimmers,
+        startTrainingForSwimmer
     } = useSwimmers();
 
     useEffect(() => {
@@ -48,14 +50,15 @@ function SwimmersPage({
                 </Header>
                 <SwimmerContent>
                     {
-                        swimmers?.map(swimmer => (
+                        swimmers?.map(swimmer => console.log(swimmer) || (
                             <SwimmerCollapsed>
                                 <SwimmerName>
-                                    {swimmer.name}
+                                    {swimmer._id}
                                 </SwimmerName>
-                                <SwimmerToggle>
-                                    toggle
-                                </SwimmerToggle>
+                                <Toggle
+                                    active={swimmer.isCurrent}
+                                    onToggle={() => startTrainingForSwimmer({ swimmerId: swimmer._id })}
+                                />
                             </SwimmerCollapsed>
                         ))
                     }

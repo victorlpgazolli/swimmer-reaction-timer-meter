@@ -111,12 +111,43 @@ const getCurrentTrainingSwimmer: Endpoint = async (req, res) => {
 
     return res.json(swimmer)
 }
+const startSwimmerTraining: Endpoint = async (req, res) => {
+    const {
+        swimmerId: id
+    } = req.params;
+
+    const isIdValid = isValidObjectId(id);
+
+    if (!isIdValid) return res.status(400).json({ message: "swimmerId is not valid" });
+
+    const swimmer: Swimmer | null = await swimmerModel.findById(
+        id
+    )
+    const hasSwimmer = !!swimmer;
+
+    if (!hasSwimmer) return res.status(404).json({ message: "swimmer do not found" });
+
+    await swimmerModel.updateMany(
+        { isCurrent: true },
+        { $set: { isCurrent: false } }
+    );
+
+    swimmer.isCurrent = true;
+
+    await swimmerModel.findByIdAndUpdate(
+        id,
+        swimmer,
+    )
+
+    res.status(201).json({ ok: true })
+}
 
 export default {
     patchSwimmer,
     deleteSwimmer,
     getTrainingFromSwimmer,
     createTrainingForSwimmer,
+    startSwimmerTraining,
     getSwimmers,
     getCurrentTrainingSwimmer,
 }
