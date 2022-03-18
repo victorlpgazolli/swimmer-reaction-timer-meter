@@ -1,12 +1,17 @@
+import { useMemo } from "react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createSwimmer, fetchSwimmers, setSwimmerAsCurrent } from "store/features/coach/actions";
+import { createSwimmer, fetchSwimmers, setSwimmerAsCurrent, updateSwimmer } from "store/features/coach/actions";
 import { coachSelector, swimmersSelector } from "store/features/coach/selectors";
 
 export const useSwimmers = () => {
     const coach = useSelector(coachSelector);
     const swimmers = useSelector(swimmersSelector);
     const dispatch = useDispatch();
+
+    const currentSwimmerIndex = useMemo(() => {
+        return swimmers.findIndex(({ isCurrent }) => !!isCurrent)
+    }, [swimmers])
 
     const addSwimmer = useCallback(({
         firstName,
@@ -29,11 +34,19 @@ export const useSwimmers = () => {
             swimmerId
         }))
     }, []);
+    const stopTrainingForSwimmer = useCallback(({ swimmerId }) => {
+        return dispatch(updateSwimmer({
+            swimmerId,
+            isCurrent: false
+        }))
+    }, []);
 
     return {
         swimmers,
         loadSwimmers,
         addSwimmer,
-        startTrainingForSwimmer
+        startTrainingForSwimmer,
+        stopTrainingForSwimmer,
+        currentSwimmerIndex,
     }
 }

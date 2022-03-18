@@ -119,6 +119,7 @@ export const SwimmerJumpName = styled.div(({ props }) => ({
     display: "flex",
     flex: 1,
     padding: 8,
+    color: "#fff"
 }))
 export const SwimmerJumpTime = styled(SwimmerJumpName)(({ props }) => ({
     justifyContent: "flex-end",

@@ -6,27 +6,23 @@ import {
     Body,
     Content,
     Header,
-    LoadMore,
     SearchInput,
-    SwimmerCollapsed,
     SwimmerContent,
     SwimmerName,
-    SwimmerNameOpen,
-    SwimmerOpen,
-    SwimmerToggle,
-    SwimmerJumpBody,
-    SwimmerJumpContent,
-    SwimmerJumpName,
-    SwimmerJumpTime,
 } from './style';
 import Toggle from './toggle';
+import SwimmerTraining from './SwimmerTraining';
+import SwimmerCollapsed from './SwimmerCollapsed';
+import SwimmersList from './SwimmersList';
 function SwimmersPage({
     navigation
 }) {
     const {
         swimmers,
         loadSwimmers,
-        startTrainingForSwimmer
+        startTrainingForSwimmer,
+        stopTrainingForSwimmer,
+        currentSwimmerIndex
     } = useSwimmers();
 
     useEffect(() => {
@@ -34,7 +30,8 @@ function SwimmersPage({
     }, [])
     useEffect(() => {
         console.log(swimmers);
-    }, [swimmers])
+    }, [swimmers]);
+
     return (
         <Body>
 
@@ -49,46 +46,14 @@ function SwimmersPage({
                         placeholder='Procurar nadador' />
                 </Header>
                 <SwimmerContent>
-                    {
-                        swimmers?.map(swimmer => console.log(swimmer) || (
-                            <SwimmerCollapsed>
-                                <SwimmerName>
-                                    {swimmer._id}
-                                </SwimmerName>
-                                <Toggle
-                                    active={swimmer.isCurrent}
-                                    onToggle={() => startTrainingForSwimmer({ swimmerId: swimmer._id })}
-                                />
-                            </SwimmerCollapsed>
-                        ))
-                    }
-
-                    <SwimmerOpen>
-                        <div>
-                            <SwimmerNameOpen>
-                                nome
-                            </SwimmerNameOpen>
-                            <SwimmerToggle>
-                                toggle
-                            </SwimmerToggle>
-                        </div>
-                        <div>
-                            <SwimmerJumpBody>
-                                <SwimmerJumpContent>
-                                    <SwimmerJumpName >
-                                        Salto 1
-                                    </SwimmerJumpName>
-                                    <SwimmerJumpTime>
-                                        00:030
-                                    </SwimmerJumpTime>
-                                </SwimmerJumpContent>
-                                <LoadMore>
-                                    Ver mais
-                                </LoadMore>
-                            </SwimmerJumpBody>
-                        </div>
-                    </SwimmerOpen>
-
+                    <SwimmersList
+                        swimmers={swimmers}
+                        onToggle={({ _id: swimmerId, isCurrent }) => {
+                            if (isCurrent) return stopTrainingForSwimmer({ swimmerId });
+                            startTrainingForSwimmer({ swimmerId })
+                        }}
+                        currentSwimmerIndex={currentSwimmerIndex}
+                    />
                 </SwimmerContent>
             </Content>
             <SwimmerBackgroundImage />
