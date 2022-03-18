@@ -14,6 +14,7 @@ import Toggle from './toggle';
 import SwimmerTraining from './SwimmerTraining';
 import SwimmerCollapsed from './SwimmerCollapsed';
 import SwimmersList from './SwimmersList';
+import toast from 'react-hot-toast';
 function SwimmersPage({
     navigation
 }) {
@@ -48,9 +49,22 @@ function SwimmersPage({
                 <SwimmerContent>
                     <SwimmersList
                         swimmers={swimmers}
-                        onToggle={({ _id: swimmerId, isCurrent }) => {
-                            if (isCurrent) return stopTrainingForSwimmer({ swimmerId });
-                            startTrainingForSwimmer({ swimmerId })
+                        onToggle={async ({ _id: swimmerId, isCurrent }) => {
+                            try {
+                                const actionPerStatus = {
+                                    [true]: () => stopTrainingForSwimmer({ swimmerId }),
+                                    [false]: () => startTrainingForSwimmer({ swimmerId }),
+                                };
+                                const action = actionPerStatus[isCurrent];
+                                await action();
+                                const actionTranslated = isCurrent
+                                    ? "pausado"
+                                    : "iniciado"
+                                toast.success(`O treinamento do nadador foi ${actionTranslated}`);
+                            } catch (error) {
+                                toast.error(`Ocorreu um erro, tente novamente mais tarde`);
+                                console.log(error);
+                            }
                         }}
                         currentSwimmerIndex={currentSwimmerIndex}
                     />

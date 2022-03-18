@@ -3,8 +3,9 @@ import axios from 'axios'
 import config from "@config";
 import { assert } from "console";
 import { Swimmer, SwimmerTraining } from "@api/types";
+import { ROOMS_NAMES } from '..';
 
-export default async (payload: SwimmerTraining, callback) => {
+export default async (payload: SwimmerTraining, callback: any, io: any) => {
     try {
         const {
             reaction_time_diff_in_milliseconds,
@@ -21,7 +22,13 @@ export default async (payload: SwimmerTraining, callback) => {
 
         const getCurrentSwimmerUrl = config.apiFullUrl + config.apiBaseURL + "/v1/swimmer/current";
 
-        const currentSwimmer: Swimmer | null = await axios.get(getCurrentSwimmerUrl);
+        const {
+            data: currentSwimmers
+        }: {
+            data: Swimmer[] | null
+        } = await axios.get(getCurrentSwimmerUrl);
+
+        const [currentSwimmer] = currentSwimmers
 
         if (!currentSwimmer) {
             console.log(`No current swimmer for ${reaction_time_diff_in_milliseconds}, exiting...`);
@@ -29,12 +36,11 @@ export default async (payload: SwimmerTraining, callback) => {
         }
 
         const {
-            id: currentSwimmerId,
-            coachId
+            _id: currentSwimmerId,
         } = currentSwimmer;
 
         assert(
-            currentSwimmerId.length > 0,
+            currentSwimmerId?.length > 0,
             "currentSwimmerId should exists"
         );
 
@@ -44,6 +50,8 @@ export default async (payload: SwimmerTraining, callback) => {
             timestamp,
             reaction_time_diff_in_milliseconds,
         });
+
+        io.to(ROOMS_NAMES.devices_listeners).emit("new_training");
 
     } catch (error) {
         console.log("[websocket] training message with error: ", error.message);
