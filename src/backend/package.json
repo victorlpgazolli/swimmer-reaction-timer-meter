@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "nodemon  -r tsconfig-paths/register ./src/app.ts",
     "start": "ts-node -r tsconfig-paths/register -r ts-node ./src/app.ts",
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
-    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "prebuild": "npx tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "npx -p typescript tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "prestart": "npm run validate",
     "validate": "test -r ./node_modules || npm install",
     "postvalidate": "npm run build"
