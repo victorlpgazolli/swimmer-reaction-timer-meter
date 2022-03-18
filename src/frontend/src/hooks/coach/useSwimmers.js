@@ -4,14 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSwimmer, fetchSwimmers, setSwimmerAsCurrent, updateSwimmer } from "store/features/coach/actions";
 import { coachSelector, swimmersSelector } from "store/features/coach/selectors";
 
-export const useSwimmers = () => {
+export const useSwimmersAcions = () => {
     const coach = useSelector(coachSelector);
-    const swimmers = useSelector(swimmersSelector);
-    const dispatch = useDispatch();
 
-    const currentSwimmerIndex = useMemo(() => {
-        return swimmers.findIndex(({ isCurrent }) => !!isCurrent)
-    }, [swimmers])
+    const dispatch = useDispatch();
 
     const addSwimmer = useCallback(({
         firstName,
@@ -42,11 +38,24 @@ export const useSwimmers = () => {
     }, []);
 
     return {
-        swimmers,
         loadSwimmers,
         addSwimmer,
         startTrainingForSwimmer,
         stopTrainingForSwimmer,
+    }
+}
+
+export const useSwimmers = () => {
+    const swimmers = useSelector(swimmersSelector);
+
+    const actions = useSwimmersAcions()
+    const currentSwimmerIndex = useMemo(() => {
+        return swimmers.findIndex(({ isCurrent }) => !!isCurrent)
+    }, [swimmers])
+
+    return {
+        ...actions,
+        swimmers,
         currentSwimmerIndex,
     }
 }

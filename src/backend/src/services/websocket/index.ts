@@ -35,7 +35,7 @@ const initServer = ({ server }: { app: Application, server: Server }) => {
 
         client.on(EVENTS_NAMES.disconnect, () => events.disconnectListener({ clients, devices, id: clientId, io }));
 
-        client.on(EVENTS_NAMES.training, events.trainingListener);
+        client.on(EVENTS_NAMES.training, (payload, callback) => events.trainingListener(payload, callback, io));
 
         client.on(EVENTS_NAMES.hello, events.helloListener);
 
