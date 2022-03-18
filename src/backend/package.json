@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "nodemon  -r tsconfig-paths/register ./src/app.ts",
     "start": "ts-node -r tsconfig-paths/register -r ts-node ./src/app.ts",
-    "prebuild": "npx tslint -c tslint.json -p tsconfig.json --fix",
-    "build": "npx -p typescript tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "prestart": "npm run validate",
-    "validate": "test -r ./node_modules || npm install",
+    "validate": "test -r ./node_modules || npm ci",
     "postvalidate": "npm run build"
   },
   "keywords": [],
@@ -28,9 +28,7 @@
     "socket.io": "^4.4.0",
     "swagger-ui-express": "^4.1.6",
     "tscpaths": "0.0.9",
-    "ws": "^8.2.3"
-  },
-  "devDependencies": {
+    "ws": "^8.2.3",
     "@types/cors": "^2.8.12",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
