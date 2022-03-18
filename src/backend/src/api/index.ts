@@ -7,6 +7,7 @@ import middlewares from '@api/middlewares';
 import http, { Server } from 'http';
 
 const whitelist = {
+    "https://swimmer.victorlpgazolli.dev": true,
     "https://swimmer-reaction-timer-meter.herokuapp.com": true,
     "http://localhost:5000": true,
     "http://localhost:3000": true,
