@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
     fetchSwimmers,
-    createSwimmer
+    createSwimmer,
+    setSwimmerAsCurrent,
+    updateSwimmer,
 } from './actions'
 
 
@@ -29,7 +31,33 @@ export const coachSlice = createSlice({
             payload: swimmer
         }) => {
             state.swimmers.push(swimmer)
-        }
+        },
+        [setSwimmerAsCurrent.fulfilled]: (state, {
+            payload: swimmerId
+        }) => {
+            const newSwimmerList = state.swimmers.map(swimmer => ({
+                ...swimmer,
+                isCurrent: console.log(swimmer._id === swimmerId) || swimmer._id === swimmerId,
+            }))
+
+            state.swimmers = newSwimmerList
+
+        },
+        [updateSwimmer.fulfilled]: (state, {
+            payload: newSwimmer
+        }) => {
+            const newSwimmerList = state.swimmers.map(swimmer => {
+                const foundSwimmer = swimmer._id === newSwimmer._id
+                if (foundSwimmer) return {
+                    ...swimmer,
+                    ...newSwimmer
+                }
+                return swimmer;
+            })
+
+            state.swimmers = newSwimmerList
+
+        },
     }
 })
 

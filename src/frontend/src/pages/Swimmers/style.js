@@ -61,7 +61,8 @@ export const SwimmerCollapsed = styled.div(({ props }) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    borderRadius: "12px"
+    borderRadius: "12px",
+    zIndex: 2
 }))
 
 export const SwimmerName = styled.div(({ props }) => ({
@@ -82,6 +83,7 @@ export const SwimmerOpen = styled.div(({ props }) => ({
     display: "flex",
     borderRadius: "12px",
     flexDirection: "column",
+    zIndex: 2,
     "& > div": {
         flex: 1,
         display: "flex",
@@ -117,6 +119,7 @@ export const SwimmerJumpName = styled.div(({ props }) => ({
     display: "flex",
     flex: 1,
     padding: 8,
+    color: "#fff"
 }))
 export const SwimmerJumpTime = styled(SwimmerJumpName)(({ props }) => ({
     justifyContent: "flex-end",

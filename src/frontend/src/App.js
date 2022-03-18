@@ -1,27 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
-import { useCoach, useConnectedDevices } from 'hooks';
+import { createGlobalStyle } from 'styled-components'
+import reset from 'styled-reset'
+import { Toaster } from 'react-hot-toast';
+import Router from 'Router';
 
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+  /* other styles */
+  html, body, #root {
+    height: 100%;
+  }
+`
 function App() {
-  const devices = useConnectedDevices();
-  console.log({ devices });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
+      <Router />
+    </>
   );
 }
 
