@@ -1,4 +1,5 @@
 #include <ESP8266WiFi.h>
+#include <WebSocketsClient.h>
 //#include <Timer.h>
 
 /* 
@@ -12,6 +13,8 @@
 #define ledON_OFF 14
 #define ledWiFI 13
 #define ledSensor 12
+
+WebSocketsClient webSocket;
 
 int statusBotao;
 int cronometro = 0;
@@ -45,14 +48,6 @@ void setup() {
   digitalWrite(ledWiFI, HIGH);
 }
 
-void loop()
-{
-  conecaoWiFi();
-  delay(2000);
-  tempoSensor();
-  exibirTempo();
-}
-
 
 /*
  * Métodos
@@ -73,10 +68,12 @@ void tempoSensor()
  * LOW = Quando o pé está na base
  * 
  */
- cronometro = 0; 
+ cronometro = 0;
+ /* 
  statusBotao = digitalRead(botao);
-  if (statusBotao == LOW )
+  if (statusBotao == HIGH )
   {
+  */
     Serial.println("botão apertado");
     while (digitalRead(sensorIR) ==LOW)
     {
@@ -87,7 +84,7 @@ void tempoSensor()
     }
     digitalWrite(ledSensor, LOW);
   }
-}
+//}
 
 void exibirTempo()
 {
@@ -95,4 +92,21 @@ void exibirTempo()
   Serial.print(cronometro);
   Serial.println("segundos");
   digitalWrite(ledSensor, LOW);
+}
+
+
+void loop()
+{
+/*
+ if (true){
+        Serial.println("enviando a letra: ");
+        webSocket.sendTXT("a");
+         } 
+*/
+ 
+
+  conecaoWiFi();
+  delay(2000);
+  tempoSensor();
+  exibirTempo();
 }
