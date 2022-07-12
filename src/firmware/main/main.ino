@@ -18,6 +18,45 @@ WebSocketsClient webSocket;
 
 int statusBotao;
 int cronometro = 0;
+long int t1,t2;
+//Websocket
+
+void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
+
+  switch (type) {
+    case WStype_DISCONNECTED:
+      Serial.printf("[WSc] Disconnected!\n");
+      break;
+    case WStype_CONNECTED: 
+        Serial.printf("[WSc] Connected to url: %s\n", payload);
+
+        // send message to server when Connected
+        //webSocket.sendTXT("Connected");
+         break;
+    case WStype_TEXT:
+      Serial.printf("[WSc] get text: %s\n", payload);
+
+      // send message to server
+      // webSocket.sendTXT("message here");
+      break;
+    case WStype_BIN:
+      Serial.printf("[WSc] get binary length: %u\n", length);
+      hexdump(payload, length);
+
+      // send data to server
+      // webSocket.sendBIN(payload, length);
+      break;
+    case WStype_PING:
+      // pong will be send automatically
+      Serial.printf("[WSc] get ping\n");
+      break;
+    case WStype_PONG:
+      // answer to a ping we send
+      Serial.printf("[WSc] get pong\n");
+      break;
+  }
+
+}
 
 void setup() {
   Serial.begin(9600);
@@ -46,6 +85,12 @@ void setup() {
   Serial.println("");
   Serial.println("WiFi connected");
   digitalWrite(ledWiFI, HIGH);
+
+
+//Iniciando o Websocket
+  webSocket.begin("swimmer-reaction-timer-meter.herokuapp.com", 43, "/"); // "ip",porta
+  webSocket.onEvent(webSocketEvent);
+    
 }
 
 
@@ -73,14 +118,19 @@ void tempoSensor()
  statusBotao = digitalRead(botao);
   if (statusBotao == HIGH )
   {
-  */
-    Serial.println("botão apertado");
+      Serial.println("botão apertado");
+
+ */
     while (digitalRead(sensorIR) ==LOW)
-    {
+    {/*
       digitalWrite(ledSensor, HIGH);
       cronometro = cronometro+1;
       Serial.println(cronometro);
       delay(1000);
+      */
+      t2=millis();
+      Serial.println(t2-t1);
+
     }
     digitalWrite(ledSensor, LOW);
   }
@@ -89,7 +139,8 @@ void tempoSensor()
 void exibirTempo()
 {
   Serial.print("Salto realizado em");
-  Serial.print(cronometro);
+  //Serial.print(cronometro);
+  Serial.print(t2-t1);
   Serial.println("segundos");
   digitalWrite(ledSensor, LOW);
 }
@@ -97,16 +148,15 @@ void exibirTempo()
 
 void loop()
 {
-/*
+
  if (true){
         Serial.println("enviando a letra: ");
-        webSocket.sendTXT("a");
+        Serial.println(webSocket.sendTXT("hello"));
          } 
-*/
- 
 
   conecaoWiFi();
   delay(2000);
+  t1=millis();
   tempoSensor();
   exibirTempo();
 }
