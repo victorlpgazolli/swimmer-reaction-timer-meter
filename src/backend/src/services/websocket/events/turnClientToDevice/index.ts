@@ -6,6 +6,8 @@ export default ({
     io
 }) => {
     devices.add(id)
+    console.log("[websocket] new device: ", devices.size);
+
     io.to(ROOMS_NAMES.devices_listeners).emit(EVENTS_NAMES.devicesLength, {
         devices: Array.from(devices.values())
     })

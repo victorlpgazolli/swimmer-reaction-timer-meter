@@ -1,48 +1,36 @@
 import { Endpoint, Swimmer } from "@api/types";
 import config from "@config";
+import { EVENTS_NAMES } from "@services/websocket/events";
 import axios from "axios";
 import { assert } from "console";
+import { io as WebSocketClient } from "socket.io-client";
 const createNewTraining: Endpoint = async (req, res) => {
-    try {
-        const {
-            reaction_time_diff_in_milliseconds
-        } = req.query
-        assert(
-            String(reaction_time_diff_in_milliseconds).length > 0,
-            "reaction_time_diff_in_millisecond should be > 0"
-        );
+    const {
+        reaction_time_diff_in_milliseconds
+    } = req.query
+    const webSocketURL = `ws://${config.apiFullUrl}`;
+    console.log(webSocketURL);
 
-        const getCurrentSwimmerUrl = config.apiFullUrl + config.apiBaseURL + "/v1/swimmer/current";
+    const socket = WebSocketClient(webSocketURL);
 
-        const currentSwimmer: Swimmer | null = await axios.get(getCurrentSwimmerUrl);
+    socket.connect();
 
-        if (!currentSwimmer) {
-            console.log(`No current swimmer for ${reaction_time_diff_in_milliseconds}, exiting...`);
-            return res.status(404).json({ error: "No current swimmer" })
-        }
-        const {
-            _id: currentSwimmerId,
-            coachId
-        } = currentSwimmer;
+    const abortTimeout = setTimeout(() => {
+        console.log("[websocket] Timed out.");
+        res.status(408).json({ error: true })
+    }, 10 * 1000);
 
-        assert(
-            String(currentSwimmerId).length > 0,
-            "currentSwimmerId should exists"
-        );
+    socket.on("connect", () => {
+        clearTimeout(abortTimeout)
 
-        const createNewTrainingUrl = config.apiFullUrl + config.apiBaseURL + `/v1/swimmer/${currentSwimmerId}/trainings`;
+        socket.emit(EVENTS_NAMES.turnClientToDevice);
+        socket.emit(EVENTS_NAMES.training, { reaction_time_diff_in_milliseconds, }, (response) => {
+            console.log("[websocket] emitted training to api, response: " + JSON.stringify(response));
 
-        await axios.post(createNewTrainingUrl, {
-            timestamp: new Date().getTime(),
-            reaction_time_diff_in_milliseconds,
+            res.status(201).json({ ok: true });
+            socket.disconnect()
         });
-    } catch (error) {
-        console.log(error);
-
-        return res.status(500).json({ ok: false })
-    }
-
-    res.status(201).json({ ok: true })
+    });
 }
 
 export default {
