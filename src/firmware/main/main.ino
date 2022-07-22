@@ -1,59 +1,36 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
-#include <WebSocketsClient.h>
+#include <ESP8266HTTPClient.h>
+
 
 ESP8266WiFiMulti WiFiMulti;
-
-WebSocketsClient webSocket;
 
 #define ssid "VINICIUS_2G"
 #define password  "vini2014"
 
 #define sensorIR 15
 
-void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
+String serverName = "http://swimmer-reaction-timer-meter.herokuapp.com";
 
-  switch (type) {
-    case WStype_DISCONNECTED:
-      Serial.printf("[WSc] Disconnected \n");
-
-      break;
-    case WStype_CONNECTED: 
-        Serial.printf("[WSc] Connected to url: %s\n", payload);
-
-        // send message to server when Connected
-        //webSocket.sendTXT("Connected");
-         break;
-    case WStype_TEXT:
-      Serial.printf("[WSc] get text: %s\n", payload);
-
-      // send message to server
-      // webSocket.sendTXT("message here");
-      break;
-    case WStype_BIN:
-      Serial.printf("[WSc] get binary length: %u\n", length);
-      hexdump(payload, length);
-
-      // send data to server
-      // webSocket.sendBIN(payload, length);
-      break;
-    case WStype_PING:
-      // pong will be send automatically
-      Serial.printf("[WSc] get ping\n");
-      break;
-    case WStype_PONG:
-      // answer to a ping we send
-      Serial.printf("[WSc] get pong\n");
-      break;
-  }
-
+void httpGETRequest(long int diff) {
+  WiFiClient client;
+  HTTPClient http;
+   String serverPath = serverName + "/api/v1/training?reaction_time_diff_in_milliseconds="+ String(diff);
+  // Your IP address with path or Domain name with URL path 
+  http.begin(client, serverPath);
+  
+  // Send HTTP POST request
+  int httpResponseCode = http.GET();
+  
+  
+  http.end();  
 }
-
 
 void setup() 
 {
   Serial.begin(9600);
   pinMode (sensorIR, INPUT);
+  pinMode (16,OUTPUT);
 
   WiFiMulti.addAP(ssid, password);
 
@@ -63,8 +40,6 @@ void setup()
   Serial.println("");
   Serial.println("WiFi connected");
   
-   webSocket.begin("swimmer-reaction-timer-meter.herokuapp.com", 80, "/socket.io/?EIO=4&transport=websocket"); // "ip",porta
-   webSocket.onEvent(webSocketEvent);
 }
 bool aguardandoBotao()
 {
@@ -75,7 +50,6 @@ bool aguardandoBotao()
 
 void loop() 
 {
-  webSocket.loop();
   
   while(aguardandoBotao()){};
   //Serial.println("1");
@@ -86,6 +60,9 @@ void loop()
   //Serial.println("3");
   long diff = tempoQuandoUsuarioTirouPe - tempoQuandoUsuarioApertouBotao;
   //Serial.println("4");
-  if(diff > 100){Serial.println(diff);}
+  if(diff > 100){
+    Serial.println(diff); 
+  httpGETRequest(diff);
+  }
   
 }
