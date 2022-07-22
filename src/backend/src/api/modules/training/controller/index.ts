@@ -5,7 +5,7 @@ import { assert } from "console";
 const createNewTraining: Endpoint = async (req, res) => {
     const {
         reaction_time_diff_in_milliseconds
-    } = req.body
+    } = req.query
     assert(
         String(reaction_time_diff_in_milliseconds).length > 0,
         "reaction_time_diff_in_millisecond should be > 0"

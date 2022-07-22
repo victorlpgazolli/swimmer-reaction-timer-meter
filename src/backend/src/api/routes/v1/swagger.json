@@ -13,11 +13,11 @@
     ],
     "paths": {
         "/training/": {
-            "post": {
+            "get": {
                 "description": "Create training for current swimmer",
                 "parameters": [
                     {
-                        "in": "body",
+                        "in": "query",
                         "name": "reaction_time_diff_in_milliseconds",
                         "required": true,
                         "type": "string"

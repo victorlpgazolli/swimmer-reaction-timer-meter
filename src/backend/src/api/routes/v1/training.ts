@@ -4,6 +4,6 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.post("/", controller.createNewTraining)
+router.get("/", controller.createNewTraining)
 
 export default router
