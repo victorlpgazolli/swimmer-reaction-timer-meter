@@ -21,7 +21,7 @@ const createNewTraining: Endpoint = async (req, res) => {
             return res.status(404).json({ error: "No current swimmer" })
         }
         const {
-            id: currentSwimmerId,
+            _id: currentSwimmerId,
             coachId
         } = currentSwimmer;
 
