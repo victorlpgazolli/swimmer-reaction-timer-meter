@@ -12,6 +12,24 @@
         "application/json"
     ],
     "paths": {
+        "/training/": {
+            "post": {
+                "description": "Create training for current swimmer",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "reaction_time_diff_in_milliseconds",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Ok"
+                    }
+                }
+            }
+        },
         "/swimmer/": {
             "get": {
                 "description": "Get all swimmers",

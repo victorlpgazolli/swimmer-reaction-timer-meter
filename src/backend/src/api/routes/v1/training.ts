@@ -1,0 +1,9 @@
+import controller from '@api/modules/training/controller';
+import { Router } from 'express';
+
+
+const router = Router();
+
+router.post("/", controller.createNewTraining)
+
+export default router
