@@ -8,8 +8,7 @@ const createNewTraining: Endpoint = async (req, res) => {
     const {
         reaction_time_diff_in_milliseconds
     } = req.query
-    const webSocketURL = `ws://${config.apiFullUrl}`;
-    console.log(webSocketURL);
+    const webSocketURL = config.apiFullUrl.replace("https://", "ws://");
 
     const socket = WebSocketClient(webSocketURL);
 
