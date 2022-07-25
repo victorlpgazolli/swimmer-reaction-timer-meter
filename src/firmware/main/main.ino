@@ -5,10 +5,19 @@
 
 ESP8266WiFiMulti WiFiMulti;
 
+
+/*
 #define ssid "VINICIUS_2G"
 #define password  "vini2014"
+*/
 
-#define sensorIR 15
+#define ssid "alledraB_2.4G"
+#define password  "15072000"
+
+
+#define sensorIR 14
+#define botao 15
+#define buzina 16
 
 String serverName = "http://swimmer-reaction-timer-meter.herokuapp.com";
 
@@ -30,7 +39,8 @@ void setup()
 {
   Serial.begin(9600);
   pinMode (sensorIR, INPUT);
-  pinMode (16,OUTPUT);
+  pinMode (buzina,OUTPUT);
+  digitalWrite(buzina,LOW);
 
   WiFiMulti.addAP(ssid, password);
 
@@ -43,7 +53,14 @@ void setup()
 }
 bool aguardandoBotao()
 {
-  //delay(2000);
+  yield();
+  return !(digitalRead(botao) == HIGH);
+}
+
+bool aguardandoBuzina()
+{
+  delay(5000);
+  digitalWrite(buzina,HIGH);
   return false;
 }
 
@@ -51,18 +68,19 @@ bool aguardandoBotao()
 void loop() 
 {
   
-  while(aguardandoBotao()){};
-  //Serial.println("1");
+  while(aguardandoBotao ()){};
+  while(aguardandoBuzina()){};
   long tempoQuandoUsuarioApertouBotao = millis();
-  //Serial.println("2");
+  Serial.println("Pronto para saltar!");
   while(digitalRead(sensorIR) == LOW){yield();};
   long tempoQuandoUsuarioTirouPe = millis();
-  //Serial.println("3");
   long diff = tempoQuandoUsuarioTirouPe - tempoQuandoUsuarioApertouBotao;
   //Serial.println("4");
-  if(diff > 100){
-    Serial.println(diff); 
+  Serial.println("Salto Realizado em: ");
+  Serial.print(diff);
+  Serial.println(" ms");
+  digitalWrite(buzina,LOW);
   httpGETRequest(diff);
-  }
+  
   
 }
