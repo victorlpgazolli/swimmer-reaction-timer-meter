@@ -14,7 +14,7 @@ ESP8266WiFiMulti WiFiMulti;
 #define ledWiFi 0
 #define ledOnOff 2
 
-String serverName = "http://swimmer-reaction-timer-meter.herokuapp.com";
+String serverName = "http://swimmer-reaction-timer-meter.brazilsouth.cloudapp.azure.com:8082";
 
 void httpGETRequest(long int diff) {
   WiFiClient client;
