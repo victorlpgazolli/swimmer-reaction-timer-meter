@@ -74,15 +74,22 @@ bool aguardandoBuzina()
 
 void loop() 
 {
-  
+
   while(aguardandoBotao ()){};
   while(aguardandoBuzina()){};
   long tempoQuandoUsuarioApertouBotao = millis();
   Serial.println("Pronto para saltar!");
-  while(digitalRead(sensorIR) == LOW){yield();};
+  while(digitalRead(sensorIR) == LOW){
+    
+    long tempoQuandoUsuarioTirouPe = millis();
+    long diff = tempoQuandoUsuarioTirouPe - tempoQuandoUsuarioApertouBotao;
+    bool limiteDeTempo = (diff > 400);
+    bool precisaDesligarBuzina = (digitalRead(buzina) == HIGH && limiteDeTempo);
+    if(!precisaDesligarBuzina)continue;
+    digitalWrite(buzina,LOW);
+    };
   long tempoQuandoUsuarioTirouPe = millis();
   long diff = tempoQuandoUsuarioTirouPe - tempoQuandoUsuarioApertouBotao;
-  //Serial.println("4");
   Serial.println("Salto Realizado em: ");
   Serial.print(diff);
   Serial.println(" ms");
