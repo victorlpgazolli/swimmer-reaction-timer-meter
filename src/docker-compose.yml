@@ -12,6 +12,7 @@ services:
       - web_reverse_connection
     ports:
       - "80:80"
+    restart: unless-stopped
     networks:
       - web
   web_reverse_connection:
