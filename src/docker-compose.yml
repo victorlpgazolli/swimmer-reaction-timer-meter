@@ -1,17 +1,41 @@
 version: '2'
 services:
-  reverse_connection:
+  web:
+    image: web
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - web-node-modules:/web/node_modules
+      - ./frontend:/web
+    depends_on:
+      - web_reverse_connection
+    ports:
+      - "80:80"
+    networks:
+      - web
+  web_reverse_connection:
     image: ngrok/ngrok
-    container_name: reverse_connection
+    container_name: web_reverse_connection
     environment:
       NGROK_AUTHTOKEN: ''
-    command: 'http --subdomain=swimmer-reaction-timer-meter 8082'
-    network_mode: host
+    command: 'http --subdomain=swimmer-reaction-timer-meter-web web:80'
     restart: unless-stopped
+    networks:
+      - web
+  api_reverse_connection:
+    image: ngrok/ngrok
+    container_name: api_reverse_connection
+    environment:
+      NGROK_AUTHTOKEN: ''
+    command: 'http --subdomain=swimmer-reaction-timer-meter-api api:8082'
+    restart: unless-stopped
+    networks:
+      - api
   api:
     image: api
     depends_on: 
-      - reverse_connection
+      - api_reverse_connection
     container_name: api
     build:
       context: ./backend
@@ -22,6 +46,14 @@ services:
     environment:
       PORT: 8082
     restart: unless-stopped
-    network_mode: host
+    ports:
+      - "8082:8082"
+    networks:
+      - api
 volumes:
   api-node-modules:
+  web-node-modules:
+
+networks:
+  api:
+  web:

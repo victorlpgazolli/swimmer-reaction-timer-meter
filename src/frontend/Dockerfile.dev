@@ -1,0 +1,28 @@
+FROM node:13-alpine AS build
+
+RUN \
+    apk update && \
+    apk upgrade && \
+    apk add git
+
+WORKDIR /web
+
+RUN chown -R node /web
+
+USER node
+
+COPY --chown=node:node package*.json . 
+
+RUN npm ci
+
+COPY --chown=node:node . .
+
+RUN npm run build
+
+
+FROM nginx:alpine
+
+COPY --from=build /web/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /web/build/ /usr/share/nginx/html
+
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
