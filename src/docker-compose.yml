@@ -1,7 +1,17 @@
 version: '2'
 services:
+  reverse_connection:
+    image: ngrok/ngrok
+    container_name: reverse_connection
+    environment:
+      NGROK_AUTHTOKEN: ''
+    command: 'http --subdomain=swimmer-reaction-timer-meter 8082'
+    network_mode: host
+    restart: unless-stopped
   api:
     image: api
+    depends_on: 
+      - reverse_connection
     container_name: api
     build:
       context: ./backend
@@ -12,7 +22,6 @@ services:
     environment:
       PORT: 8082
     restart: unless-stopped
-    ports:
-      - 8082:8082
+    network_mode: host
 volumes:
   api-node-modules:
