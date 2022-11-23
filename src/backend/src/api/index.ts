@@ -9,6 +9,8 @@ import http, { Server } from 'http';
 const whitelist = {
     "https://swimmer.victorlpgazolli.dev": true,
     "https://swimmer-reaction-timer-meter.herokuapp.com": true,
+    "https://swimmer-reaction-timer-meter-web.sa.ngrok.io": true,
+    "https://swimmer-reaction-timer-meter-api.sa.ngrok.io": true,
     "http://swimmer-reaction-timer-meter.brazilsouth.cloudapp.azure.com:8082": true,
     "http://localhost:5000": true,
     "http://localhost:3000": true,

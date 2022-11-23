@@ -18,7 +18,7 @@ services:
     image: ngrok/ngrok
     container_name: web_reverse_connection
     environment:
-      NGROK_AUTHTOKEN: ''
+      NGROK_AUTHTOKEN: '5W1bR67GNbWcXqmxZzBG1_56GezNeaX6sSRvn8npeQ8'
     command: 'http --subdomain=swimmer-reaction-timer-meter-web web:80'
     restart: unless-stopped
     networks:
@@ -27,7 +27,7 @@ services:
     image: ngrok/ngrok
     container_name: api_reverse_connection
     environment:
-      NGROK_AUTHTOKEN: ''
+      NGROK_AUTHTOKEN: '5W1bR67GNbWcXqmxZzBG1_56GezNeaX6sSRvn8npeQ8'
     command: 'http --subdomain=swimmer-reaction-timer-meter-api api:8082'
     restart: unless-stopped
     networks:
