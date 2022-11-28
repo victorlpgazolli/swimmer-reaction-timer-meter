@@ -1,8 +1,6 @@
 import { Endpoint, Swimmer } from "@api/types";
 import config from "@config";
 import { EVENTS_NAMES } from "@services/websocket/events";
-import axios from "axios";
-import { assert } from "console";
 import { io as WebSocketClient } from "socket.io-client";
 const createNewTraining: Endpoint = async (req, res) => {
     const {
@@ -15,8 +13,10 @@ const createNewTraining: Endpoint = async (req, res) => {
     socket.connect();
 
     const abortTimeout = setTimeout(() => {
-        console.log("[websocket] Timed out.");
-        res.status(408).json({ error: true })
+        const errorMessage = "[websocket] Timed out."
+        console.log(errorMessage);
+        socket.disconnect()
+        res.status(408).json({ error: true, reason: errorMessage })
     }, 10 * 1000);
 
     socket.on("connect", () => {
