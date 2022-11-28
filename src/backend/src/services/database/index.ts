@@ -1,9 +1,8 @@
 import config from '@config';
-import { assert } from 'console';
 import {
     connect as connectToMongoDB
 } from 'mongoose'
-
+import swimmerModel from "@api/modules/swimmer/model";
 const connect = async () => {
     try {
         const hasDatabaseUrl = config.databaseURL.length > 0
@@ -19,6 +18,24 @@ const connect = async () => {
     }
 }
 
+const clearAllDB = async () => {
+    try {
+        console.log("[database] requested to clear db");
+
+        await connect();
+
+        await Promise.all([
+            swimmerModel.deleteMany({})
+        ]);
+
+        console.log("[database] cleared db");
+
+    } catch (error) {
+        console.error("[database] error when clearing DB:", error.message);
+    }
+}
+
 export default {
-    connect
+    connect,
+    clearAllDB
 }
