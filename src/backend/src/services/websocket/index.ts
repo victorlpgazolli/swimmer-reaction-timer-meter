@@ -3,7 +3,7 @@ import {
     Application
 } from 'express';
 import { Server as WebSocketServer } from "socket.io";
-import events, { EVENTS_NAMES, ROOMS_NAMES } from '@services/websocket/events';
+import events, { EVENTS_NAMES } from '@services/websocket/events';
 import { Server } from 'http';
 
 const initServer = ({ server }: { app: Application, server: Server }) => {
