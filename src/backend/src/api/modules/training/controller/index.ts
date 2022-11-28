@@ -6,14 +6,18 @@ const createNewTraining: Endpoint = async (req, res) => {
     const {
         reaction_time_diff_in_milliseconds
     } = req.query
-    const webSocketURL = config.apiFullUrl.replace("https://", "ws://");
+    const webSocketURL = config.apiFullUrl.replace("https://", "wss://");
+
+    console.log(`[websocket] received reaction time diff in milliseconds=${reaction_time_diff_in_milliseconds}`);
 
     const socket = WebSocketClient(webSocketURL);
+
+    console.log("[websocket] trying to connect to web socket URL=", webSocketURL);
 
     socket.connect();
 
     const abortTimeout = setTimeout(() => {
-        const errorMessage = "[websocket] Timed out."
+        const errorMessage = "[websocket] timed out to " + webSocketURL
         console.log(errorMessage);
         socket.disconnect()
         res.status(408).json({ error: true, reason: errorMessage })
