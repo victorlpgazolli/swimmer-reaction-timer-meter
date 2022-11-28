@@ -77,7 +77,7 @@ void loop()
 
   while(aguardandoBotao ()){};
   while(aguardandoBuzina()){};
-  long tempoQuandoUsuarioApertouBotao = millis();
+  unsigned long tempoQuandoUsuarioApertouBotao = millis();
   Serial.println("Pronto para saltar!");
   while(digitalRead(sensorIR) == LOW){
     
