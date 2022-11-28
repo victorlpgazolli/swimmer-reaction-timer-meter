@@ -9,9 +9,9 @@ import {
 
 const initialState = {
     coach: {
-        id: "622a8e540daa0d0ce4a8624e",
-        name: "coach 1",
-        email: "coach@coach.com",
+        id: "6384e7752af68aa68671892b",
+        name: "treinador atleta",
+        email: "treinador@treinador.com",
     },
     swimmers: []
 }
