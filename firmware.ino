@@ -4,8 +4,8 @@
 
 ESP8266WiFiMulti WiFiMulti;
 
-#define ssid "alledraB_2.4G"
-#define password  "15072000"
+#define ssid "ReacaoNadadorWifi"
+#define password  "nadador01"
 
 #define sensorIR 12
 #define botao 14
@@ -20,10 +20,9 @@ void httpGETRequest(long int diff) {
   WiFiClient client;
   HTTPClient http;
    String serverPath = serverName + "/api/v1/training?reaction_time_diff_in_milliseconds="+ String(diff);
-  // Your IP address with path or Domain name with URL path 
+  
   http.begin(client, serverPath);
   
-  // Send HTTP POST request
   int httpResponseCode = http.GET();
   
   
