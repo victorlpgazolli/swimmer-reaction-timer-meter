@@ -18,7 +18,7 @@ const connect = async () => {
     }
 }
 
-const clearAllDB = async () => {
+const clear = async () => {
     try {
         console.log("[database] requested to clear db");
 
@@ -37,5 +37,5 @@ const clearAllDB = async () => {
 
 export default {
     connect,
-    clearAllDB
+    clear
 }
